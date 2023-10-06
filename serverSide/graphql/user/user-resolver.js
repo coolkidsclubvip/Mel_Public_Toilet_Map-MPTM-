@@ -1,6 +1,6 @@
 // Import necessary modules
 const { GraphQLError } = require("graphql");
-const User = require("../../models/user");
+const UserModel = require("../../models/user");
 const { validateUser, validateLogin } = require("../../helpers/joi");
 const { isAuthenticated, isAuthorized } = require("../../helpers/auth");
 const Joi = require("joi");
@@ -11,10 +11,6 @@ const resolvers = {
   Query: {
     getUser: async (parent, args, context) => {
       try {
-        //In Apollo Server, the context object is a way to share data between resolvers.
-        //It is an object that is passed to every resolver function, and can be used to store data that is needed by multiple resolvers.
-        //The context object is typically used to store information about the current user, such as their authentication status or user ID. This information can then be used by resolvers to determine whether the user is authorized to perform certain actions.
-
         // Check if the user is authenticated
         isAuthenticated(context);
 
@@ -42,7 +38,7 @@ const resolvers = {
     getUsers: async () => {
       try {
         // Find all users in the database
-        const users = await User.find();
+        const users = await UserModel.find();
         return users;
       } catch (err) {
         // If there was an error, throw an ApolloError with a custom error code
@@ -64,7 +60,7 @@ const resolvers = {
           throw new Error(`Invalid User input ${error}`);
         }
         // Create a new user with the validated input data
-        const user = new User(value);
+        const user = new UserModel(value);
         await user.save();
 
         // Generate an auth token for the new user
@@ -94,11 +90,6 @@ const resolvers = {
 
     loginUser: async (parent, args) => {
       try {
-        // Validate the login input data using a Joi schema
-        // const loginSchema = Joi.object({
-        //   email: Joi.string().email().required(),
-        //   password: Joi.string().required(),
-        // });
         const { error, value } = validateLogin(args.input);
         // If the input data is invalid, throw an Error
         if (error) {
@@ -106,7 +97,7 @@ const resolvers = {
         }
 
         // Find the user with the given email
-        const user = await User.findOne({ email: value.email });
+        const user = await UserModel.findOne({ email: value.email });
 
         // If the user doesn't exist, throw an Error
         if (!user) {
@@ -136,7 +127,7 @@ const resolvers = {
         userData.token = token;
 
         // Return the user data with the auth token
-        return  userData;
+        return userData;
       } catch (error) {
         // If there was an error, throw an ApolloError with a custom error code
         throw new GraphQLError(error, {
@@ -146,13 +137,14 @@ const resolvers = {
         });
       }
     },
+
     updateUser: async (parent, args, context) => {
       try {
         // Check if the user is authenticated
-        // isAuthenticated(context);
+        isAuthenticated(context);
 
         // Find the user with the given ID
-        const user = await User.findById(args.id);
+        const user = await UserModel.findById(args.id);
         // If the user doesn't exist, throw an Error
         if (!user) {
           throw new Error("User not found");
@@ -168,7 +160,7 @@ const resolvers = {
         }
 
         // Update the user with the validated input data
-        const updatedUser = await User.findByIdAndUpdate(args.id, value, {
+        const updatedUser = await UserModel.findByIdAndUpdate(args.id, value, {
           new: true,
         });
 
@@ -189,7 +181,7 @@ const resolvers = {
         isAuthenticated(context);
 
         // Find the user with the given ID
-        const user = await User.findById(args.id);
+        const user = await UserModel.findById(args.id);
         // If the user doesn't exist, throw an Error
         if (!user) {
           throw new Error("User not found");
@@ -198,7 +190,7 @@ const resolvers = {
         // Check if the user is authorized to delete the user
         isAuthorized(user, context);
         // Delete the user
-        const deletedUser = await User.findByIdAndDelete(args.id);
+        const deletedUser = await UserModel.findByIdAndDelete(args.id);
 
         // Return the deleted user data
         return deletedUser;

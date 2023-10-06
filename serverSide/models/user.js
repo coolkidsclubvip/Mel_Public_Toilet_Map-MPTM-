@@ -70,11 +70,6 @@ userSchema.methods.generateAuthToken = function () {
   return token;
 };
 
-// Create a user model using the user schema
-const User = mongoose.model("User", userSchema);
+const UserModel = mongoose.model("User", userSchema);
 
-
-
-// Export the user model and the validateUser function so they can be used in other parts of the application
-module.exports = User;
-
+module.exports = UserModel;

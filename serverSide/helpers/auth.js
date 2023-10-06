@@ -9,7 +9,7 @@ function isAuthenticated(context) {
 // 		throw new Error('Not authorized')
 // 	}
 	function isAuthorized( context) {
-	if (context.user.isAdmin.toString() !== true) {
+	if (context.user.isAdmin !== true) {
 		throw new Error('Not authorized')
 	}
 }
