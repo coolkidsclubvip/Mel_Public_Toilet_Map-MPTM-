@@ -1,26 +1,33 @@
-import { gql } from '@apollo/client';
+import { gql } from "@apollo/client";
 
-export const GET_JOURNAL_ENTRIES = gql`
-query JournalEntries {
-  journalEntries {
-    id
-    title
-    body
-    mood
-    createdAt
-    updatedAt
-    user
+export const GET_TOILET_LOCATIONS = gql`
+  query toiletLocations {
+    toiletLocations {
+      id
+      name
+      female
+      male
+      wheelchair
+      operator
+      baby_facil
+      lon
+      lat
+    }
   }
-}
 `;
 
-export const GET_JOURNAL_ENTRY = gql`
-  query JournalEntry($journalEntryId: ID!) {
-    journalEntry(id: $journalEntryId) {
+export const GET_TOILET_LOCATION = gql`
+  query toiletLocation($toiletLocationId: ID!) {
+    toiletLocation(id: $toiletLocationId) {
       id
-      title
-      body
-      mood
+      name
+      female
+      male
+      wheelchair
+      operator
+      baby_facil
+      lon
+      lat
     }
   }
 `;

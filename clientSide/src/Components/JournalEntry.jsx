@@ -4,7 +4,7 @@ import Joi from "joi"; //Joi Validation Library
 import { joiResolver } from "@hookform/resolvers/joi"; //Joi Resolver for React Hook Form. - This is needed to use Joi with React Hook Form
 // Apollo Client
 import { useMutation, gql } from "@apollo/client"; //Apollo Client Hooks - useMutation
-import { CREATE_JOURNAL_ENTRY } from "../graphQL/mutations/mutations"; //GraphQL Mutation
+// import { CREATE_JOURNAL_ENTRY } from "../graphQL/mutations/mutations"; //GraphQL Mutation
 // React Bootstrap
 import { Card, Col, Form, Row, Button, Alert } from "react-bootstrap"; //React Bootstrap
 

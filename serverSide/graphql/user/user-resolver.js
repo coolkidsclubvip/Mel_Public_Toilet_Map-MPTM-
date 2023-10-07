@@ -15,7 +15,7 @@ const resolvers = {
         isAuthenticated(context);
 
         // Find the user with the given ID
-        const user = await User.findById(args.id);
+        const user = await UserModel.findById(args.id);
         // If the user doesn't exist, throw an Error
         if (!user) {
           throw new Error("User not found");

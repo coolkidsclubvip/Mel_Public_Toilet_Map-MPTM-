@@ -1,3 +1,13 @@
+body{
+
+  background-image: url("/groupthink-blog-650x650-c-default.jpg");
+  background-repeat:no-repeat;
+  background-position: center center;
+  background-size: cover;
+  
+}
+
+
 /* Typography */
 .bold {
   font-weight: bold !important;
@@ -22,6 +32,7 @@ a:hover {
 /* Cards */
 .card {
   border: 1px solid rgba(0, 0, 0, 0.3);
+  min-width: 30vw;
 }
 
 .card-title {
@@ -125,6 +136,15 @@ a:hover {
   font-size: 2.5rem;
 }
 
+
+#map {
+  height: 200px;
+  /* The height is 400 pixels */
+  width: 100%;
+  /* The width is the width of the web page */
+  /* background-color: red; */
+  margin: 1rem;
+}
 /*Chrome*/
 input[type="range"] {
   overflow: visible;

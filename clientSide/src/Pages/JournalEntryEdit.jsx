@@ -6,8 +6,8 @@ import { joiResolver } from "@hookform/resolvers/joi"; // Joi Resolver for React
 import { useParams, useNavigate } from "react-router-dom"; // React Router
 //Apollo Client
 import { useMutation, useQuery } from "@apollo/client"; // Apollo Client Hooks - useMutation
-import { GET_JOURNAL_ENTRY } from "../graphQL/queries/queries"; // GraphQL Query
-import { UPDATE_JOURNAL_ENTRY } from "../graphQL/mutations/mutations"; // GraphQL Mutation
+// import { GET_JOURNAL_ENTRY } from "../graphQL/queries/queries"; // GraphQL Query
+// import { UPDATE_JOURNAL_ENTRY } from "../graphQL/mutations/mutations"; // GraphQL Mutation
 //React Bootstrap
 import { Card, Col, Form, Row, Button, Alert } from "react-bootstrap";
 
