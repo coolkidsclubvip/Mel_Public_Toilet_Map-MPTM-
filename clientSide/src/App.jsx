@@ -6,10 +6,12 @@ import { Container } from "react-bootstrap"; // React Bootstrap Library
 // Import custom components
 import Header from "./Components/Header";
 import Toilets from "./Pages/Toilets";
+import Profile from "./Pages/Profile";
 // import JournalEntryEdit from "./Pages/JournalEntryEdit";
 import Login from "./Pages/Login";
 import SignUp from "./Pages/SignUp";
 import NotFound from "./Pages/NotFound";
+import { ToastContainer } from "react-toastify";
 
 //? APOLLO CLIENT
 // Import Apollo Client and related dependencies
@@ -84,15 +86,32 @@ function App() {
       {/* 这是Apollo Client库提供的顶级组件，用于将GraphQL客户端与React应用程序集成在一起，以便在组件中使用GraphQL查询和数据。 */}
       <ApolloProvider client={client}>
         <Container className="min-width">
+          <ToastContainer
+            position="top-right"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={true}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="light"
+          />
+
           <Header user={user} onLogout={handleLogout} />
           <Routes>
             <Route path="/login" element={<Login onLogin={handleLogin} />} />
             <Route path="/signup" element={<SignUp onLogin={handleLogin} />} />
-            {/* Protected Journal Routes */}{" "}
-            {/* 这是一个主页面的路由配置，指定了根路径"/"时应该渲染ProtectedRoute组件，并传递了Journal组件作为component属性以及当前用户user */}
+            {/* Protected Routes */}{" "}
+            {/*This is a routing configuration for the main page. When the root path "/" is specified, the ProtectedRoute component should be rendered, and the Toilet component is passed as the component attribute and the current user user */}
             <Route
               path="/"
               element={<ProtectedRoute component={Toilets} user={user} />}
+            />
+            <Route
+              path="/profile"
+              element={<ProtectedRoute component={Profile} user={user} />}
             />
             {/* Protected Journal Entry Edit Route */}
             {/* <Route

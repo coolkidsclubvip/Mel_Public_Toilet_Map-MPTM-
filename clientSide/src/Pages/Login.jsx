@@ -10,6 +10,9 @@ import { Card, Form, Button, Alert } from "react-bootstrap";
 import { useMutation } from "@apollo/client";
 //GraphQL Mutations
 import { LOGIN_USER } from "../graphQL/mutations/mutations";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faRightToBracket } from "@fortawesome/free-solid-svg-icons";
+import { toast } from "react-toastify";
 
 function Login({ onLogin }) {
   // JOI Validation for React-Hook-Forms
@@ -39,7 +42,7 @@ function Login({ onLogin }) {
   });
 
   const [loginUser, { loading, error }] = useMutation(LOGIN_USER); // loginUser - The mutation function
-  const [errorMessage, setErrorMessage] = useState(""); // Error message state
+
   const navigate = useNavigate(); // Navigate function to navigate to a different page
 
   // Submit Login
@@ -56,34 +59,28 @@ function Login({ onLogin }) {
           },
         },
       });
-      console.log(result.data);
+      console.log("result.data is: ", result.data);
+           toast.success(`Welcome back, ${result.data.loginUser.username}`);
       onLogin(result.data.loginUser); // Call onLogin function from App.jsx to store the user in App.jsx state
       navigate("/"); // Navigate to the home page
     } catch (error) {
       console.log(error.message);
-      setErrorMessage(error.message); // Set error message state
       reset(); // Reset the form
     }
   };
 
-  //Generates a random number that is used to select a background colour for the card component
-  function getRandomNumber() {
-    return Math.floor(Math.random() * 5);
-  }
-  //Generates a random emoji that is used to display a random emoji in the card component
-  function getRandomPersonEmoji() {
-    const personEmojis = ["👩", "👨", "🧑", "👧", "👦"];
-    const randomIndex = Math.floor(Math.random() * personEmojis.length);
-    return personEmojis[randomIndex];
-  }
+  
 
   return (
-    <Card className={`shadow m-3 bg-${getRandomNumber()}`}>
+    <Card className={"shadow m-3 mt-5 bg-3"}>
       <Card.Body>
         {/* Form Header */}
         <div className="d-flex mb-3">
           <div className="emoji display-6 me-2 p-2 rounded-circle inner-shadow-emoji">
-            {getRandomPersonEmoji()}
+            <FontAwesomeIcon
+              icon={faRightToBracket}
+              style={{ color: "#C37700" }}
+            />
           </div>
           <div className="title">
             <Card.Title className="bold text-white">Login</Card.Title>
@@ -146,11 +143,11 @@ function Login({ onLogin }) {
             )}
           />
           {/* /Password Text Box */}
-          {errorMessage && (
+          {/* {errorMessage && (
             <Alert variant="danger" className="mt-2 alert-dark mb-0">
               {errorMessage}
             </Alert>
-          )}
+          )} */}
           {/* Submit Button */}
           <Button
             variant="dark"

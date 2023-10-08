@@ -1,5 +1,6 @@
 import { useState,useEffect } from "react";
 import {GoogleMap,useLoadScript, Marker} from "@react-google-maps/api"
+// const config = require("./config");
 
 function Map({lng,lat}) {
   const { isLoaded } = useLoadScript({
@@ -16,9 +17,7 @@ function Map({lng,lat}) {
   if(!isLoaded) {return <div>Loading map...</div>;}
  
 
-// {{lat:`${lat}`, lng:`${lon}`}}
-  console.log("lat:", lat);
-  console.log("lng:", lng);
+
 
   return (
     <GoogleMap zoom={15} center={{ lat: lat, lng: lng }} id="map">

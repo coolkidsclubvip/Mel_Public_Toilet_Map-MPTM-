@@ -9,11 +9,14 @@ import { useNavigate } from "react-router-dom";
 import { Controller, useForm } from "react-hook-form";
 import { joiResolver } from "@hookform/resolvers/joi";
 import Joi from "joi";
+import { toast } from "react-toastify";
 //Apollo Client
 import { useMutation } from "@apollo/client";
 import { CREATE_USER } from "../graphQL/mutations/mutations";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUserPlus } from "@fortawesome/free-solid-svg-icons";
 
-function SignUp({ onLogin}) {
+function SignUp({ onLogin }) {
   //JOI Validation for React-Hook-Forms
   const schema = Joi.object({
     username: Joi.string().required(),
@@ -43,14 +46,14 @@ function SignUp({ onLogin}) {
 
   //?Apollo Client Mutation
   const [createUser, { loading, error }] = useMutation(CREATE_USER); //createUser - The mutation function 一个名为CREATE_USER的gql查询语句，放入useMutation钩子，得到一个createUser function
-  const [errorMessage, setErrorMessage] = useState(""); // Error message state
+
   const navigate = useNavigate(); // Navigate function to navigate to a different page
 
-  //?Submit New User
+  //Submit New User
   //This function is called when the form is submitted by react hook forms
   const onSubmit = async (data, event) => {
     event.preventDefault(); // Prevents page from refreshing on submit
-    const { username, email, password,isAdmin } = data; // Destructure data from form
+    const { username, email, password, isAdmin } = data; // Destructure data from form
 
     try {
       // Send the mutation request with data as input 用集成了gql mutation语句的发射函数
@@ -65,32 +68,27 @@ function SignUp({ onLogin}) {
         },
       });
       console.log(result.data); //Response from the server
+      toast.success(`User ${username} is successfully registered`);
       onLogin(result.data.createUser); // Call onLogin function with the user to be save to state and session storage????????????????????
       navigate("/"); // Navigate to the home page
     } catch (error) {
       console.log(error.message);
-      setErrorMessage(error.message); // Set error message state
+      toast.error(error.message);
     }
   };
 
-  //Generates a random number that is used to select a background colour for the card component
-  function getRandomNumber() {
-    return Math.floor(Math.random() * 5);
-  }
-  //Generates a random emoji that is used to display a random emoji in the card component
-  // function getRandomPersonEmoji() {
-  //   const personEmojis = ["👩", "👨", "🧑", "👧", "👦", "🚹", "♿"];
-  //   const randomIndex = Math.floor(Math.random() * personEmojis.length);
-  //   return personEmojis[randomIndex];
-  // }
-
   return (
-    <Card className={`shadow m-3 bg-${getRandomNumber()}`}>
+    <Card className={"shadow m-3 bg-2 mt-5"}>
       <Card.Body>
         {/* Form Header */}
         <div className="d-flex mb-3">
           <div className="emoji display-6 me-2 p-2 rounded-circle inner-shadow-emoji">
-            {/* {getRandomPersonEmoji()} */}
+            {
+              <FontAwesomeIcon
+                icon={faUserPlus}
+                style={{ color: " #007100" }}
+              />
+            }
           </div>
           <div className="title">
             <Card.Title className="bold text-white">Sign Up</Card.Title>
@@ -209,13 +207,7 @@ function SignUp({ onLogin}) {
               </Form.Group>
             )}
           />
-          {/* General Error Messages */}
-          {errorMessage && (
-            <Alert variant="danger" className="mt-2 alert-dark mb-0">
-              {errorMessage.isAdmin.message}
-            </Alert>
-          )}
-          {/* General Error Messages */}
+
           {/* Submit Button */}
           <Button
             variant="dark"
