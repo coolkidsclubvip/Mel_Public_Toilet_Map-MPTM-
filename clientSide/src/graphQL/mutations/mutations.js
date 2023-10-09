@@ -1,19 +1,18 @@
 import { gql } from "@apollo/client";
 
 export const DELETE_TOILET_LOCATION = gql`
-  mutation DeleteToiletLocation($deleteToiletLocationId: ID!) {
+  mutation deleteToiletLocation($deleteToiletLocationId: ID!) {
     deleteToiletLocation(id: $deleteToiletLocationId) {
       id
       name
-   
     }
   }
 `;
 
 export const CREATE_TOILET_LOCATION = gql`
-  mutation CreateToiletLocation($input: ToiletLocationInput!) {
+  mutation createToiletLocation($input: createToiletLocationInput!) {
     createToiletLocation(input: $input) {
-      id
+      # id
       name
       female
       male
@@ -27,9 +26,9 @@ export const CREATE_TOILET_LOCATION = gql`
 `;
 
 export const UPDATE_TOILET_LOCATION = gql`
-  mutation UpdateToiletLocation(
+  mutation updateToiletLocation(
     $updateToiletLocationId: ID!
-    $input: ToiletLocationInput!
+    $input: updateToiletLocationInput!
   ) {
     updateToiletLocation(id: $updateToiletLocationId, input: $input) {
       name
@@ -38,6 +37,8 @@ export const UPDATE_TOILET_LOCATION = gql`
       wheelchair
       operator
       baby_facil
+      lon
+      lat
     }
   }
 `;
@@ -50,6 +51,7 @@ export const LOGIN_USER = gql`
       id
       token
       username
+      isAdmin
     }
   }
 `;

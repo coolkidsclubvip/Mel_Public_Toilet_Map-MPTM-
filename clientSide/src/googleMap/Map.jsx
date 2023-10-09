@@ -17,13 +17,19 @@ function Map({lng,lat}) {
   if(!isLoaded) {return <div>Loading map...</div>;}
  
 
-// {{lat:`${lat}`, lng:`${lon}`}}
-  console.log("lat:", lat);
-  console.log("lng:", lng);
+
+  // console.log("lat:", lat);
+  // console.log("lng:", lng);
+  const mapOptions = {
+    zoom: 15,
+    center: { lat: lat, lng: lng },
+    fullscreenControl: true, // full screen control button
+    streetViewControl: false, //no show street view
+  };
 
   return (
-    <GoogleMap zoom={15} center={{ lat: lat, lng: lng }} id="map">
-     { isMarkerVisible && <Marker position={{ lat: lat, lng: lng }} />}
+    <GoogleMap id="map" options={mapOptions}>
+      {isMarkerVisible && <Marker position={{ lat: lat, lng: lng }} />}
     </GoogleMap>
   );
 }

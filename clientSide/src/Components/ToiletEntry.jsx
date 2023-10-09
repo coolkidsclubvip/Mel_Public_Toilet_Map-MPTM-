@@ -1,20 +1,38 @@
-// React
+import { useState } from "react";
 import { Controller, useForm } from "react-hook-form"; //React Hook Form
 import Joi from "joi"; //Joi Validation Library
 import { joiResolver } from "@hookform/resolvers/joi"; //Joi Resolver for React Hook Form. - This is needed to use Joi with React Hook Form
 // Apollo Client
 import { useMutation, gql } from "@apollo/client"; //Apollo Client Hooks - useMutation
-// import { CREATE_JOURNAL_ENTRY } from "../graphQL/mutations/mutations"; //GraphQL Mutation
+import { CREATE_TOILET_LOCATION } from "../graphQL/mutations/mutations"; //GraphQL Mutation
 // React Bootstrap
-import { Card, Col, Form, Row, Button, Alert } from "react-bootstrap"; //React Bootstrap
+import {
+  Card,
+  Col,
+  Form,
+  Row,
+  Button,
+  Alert,
+  CloseButton,
+} from "react-bootstrap";
+import styles from "../styles/toiletEntry.module.css";
+faToiletPaper;
+import { toast } from "react-toastify";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faToiletPaper } from "@fortawesome/free-solid-svg-icons";
 
-function JournalEntry(props) {
-  const userData = props.user; //User Data from App.js
+function ToiletEntry({ user, setShowEntry, refetch }) {
+  // const userData = props.user; //User Data from App.js
   //Joi Validation
   const schema = Joi.object({
-    title: Joi.string().min(3).max(256),
-    mood: Joi.number().min(0).max(100),
-    body: Joi.string().min(3).max(1024),
+    name: Joi.string().min(3).max(300).required(),
+    female: Joi.boolean().required(),
+    male: Joi.boolean().required(),
+    wheelchair: Joi.boolean().required(),
+    baby_facil: Joi.boolean().required(),
+    operator: Joi.string().min(3).max(300).required(),
+    lon: Joi.number().required(),
+    lat: Joi.number().required(),
   });
 
   //useForm
@@ -24,78 +42,74 @@ function JournalEntry(props) {
   //reset - React Hook Forms reset function this is used to reset the form
   const {
     control,
+    reset,
     watch,
     handleSubmit,
     formState: { errors },
   } = useForm({
     resolver: joiResolver(schema),
     defaultValues: {
-      title: "Because I have cake! 🍰",
-      mood: 1,
-      body: "Why are you feeling this way? What happened?",
+      name: "",
+      female: false,
+      male: false,
+      wheelchair: false,
+      baby_facil: false,
+      operator: "",
     },
   });
 
-  const watchMood = watch("mood"); //watch is a React Hook Form function that watches a specific input field. In this case, it is watching the mood input field.
-
-  //onSubmit
-  const onSubmit = async (data) => {
-    data.user = userData.id; //Add the user id to the data object
-    const { title, body, mood, user } = data; //Destructure the data object
-    const token = userData.token; //Get the token from the user data
-    await createJournal({ title, body, mood, user }, token); //Call the createJournal function and pass in the data object and the token
-  };
-
-  //This function converts the mood score to an emoji
-  const scoreToEmoji = (score) => {
-    const emojiSadToHappy = ["😀", "😐", "😭", "😠", "🤬"];
-    return emojiSadToHappy[score];
-  };
-
   //GraphQL Mutation for creating a journal entry
-  const [createJournalEntry] = useMutation(CREATE_JOURNAL_ENTRY, {
+  const [createNewLocationGQL] = useMutation(CREATE_TOILET_LOCATION, {
     //update the cache to add the new journal entry
-    update(cache, { data: { createJournalEntry } }) {
+    update(cache, { data: { createNewLocationGQL } }) {
       cache.modify({
         fields: {
           //add the new journal entry to the journalEntries array
-          journalEntries(existingEntries = []) {
+          toiletLocations(existingLocations = []) {
             //create a new journal entry reference
             const newEntryRef = cache.writeFragment({
-              data: createJournalEntry,
+              data: createNewLocationGQL,
               fragment: gql`
-                fragment NewJournalEntry on JournalEntry {
+                fragment NewToiletLocation on ToiletLocation {
                   id
-                  title
-                  body
-                  mood
-                  createdAt
-                  updatedAt
-                  user
+                  name
+                  female
+                  male
+                  wheelchair
+                  operator
+                  baby_facil
+                  lon
+                  lat
                 }
               `,
             });
             //return the new journal entry reference and the existing journal entries
-            return [...existingEntries, newEntryRef];
+            return [...existingLocations, newEntryRef];
           },
         },
       });
     },
   });
+
   //This function is used to create a journal entry
-  const createJournal = async (data, token) => {
+  const createNewLocation = async (data, token) => {
     //Destructure the data object
-    const { title, body, mood, user } = data;
+    const { name, female, male, wheelchair, operator, baby_facil, lon, lat } =
+      data;
 
     try {
       //Send the mutation request with data as input
-      const result = await createJournalEntry({
+      const result = await createNewLocationGQL({
         variables: {
           input: {
-            title,
-            body,
-            mood,
-            user,
+            name,
+            female,
+            male,
+            wheelchair,
+            operator,
+            baby_facil,
+            lon,
+            lat,
           },
         },
         context: {
@@ -104,120 +118,269 @@ function JournalEntry(props) {
           },
         },
       });
-      console.log(result.data.createJournalEntry);
+      console.log("result is: ", result);
+      toast.success("New location has been created");
     } catch (error) {
       console.error(error);
+      toast.error("New location creation failed: " + error.message); ///why error shows????????????????????????????????????????
     }
   };
 
+  //onSubmit callback function
+  const onSubmit = async (data) => {
+    // data.user = user.id; //Add the user id to the data object: why??????
+    const { name, female, male, wheelchair, operator, baby_facil, lon, lat } =
+      data; //Destructure the data object, from hook from?
+
+    const token = user.token; //Get the token from the user data
+    await createNewLocation(
+      { name, female, male, wheelchair, operator, baby_facil, lon, lat },
+      token
+    ); //Call the createNewLocation function and pass in the data object and the token
+    refetch();
+    reset();
+    setShowEntry(false);
+  };
+
   return (
-    <Card className={"shadow text-white m-3 " + `bg-${watchMood}`}>
+    <Card className="shadow text-white m-3 bg-1 w-50 mx-auto">
       <Card.Body>
-        <Form noValidate="noValidate" onSubmit={handleSubmit(onSubmit)}>
+        <Form noValidate onSubmit={handleSubmit(onSubmit)}>
           <div className="d-flex align-items-center">
-            {/* Displays emoji based on mood score */}
-            <div className="emoji me-2 rounded-circle inner-shadow-emoji-large">
-              {scoreToEmoji(watchMood)}
+            <div className="emoji  rounded-circle inner-shadow-emoji-large">
+              <FontAwesomeIcon
+                icon={faToiletPaper}
+                size="sm"
+                style={{ color: "white" }}
+              />
             </div>
-            {/* /Displays emoji based on mood score */}
-            <div className="title w-100">
-              {/* Why Text Box */}
+            <div className="w-75 mx-auto ms-3">
               <Controller
-                name="title"
+                name="name"
                 control={control}
                 render={({ field }) => (
-                  // Boostrap input text box component
                   <Form.Control
                     {...field}
                     type="text"
-                    placeholder="Enter title"
-                    aria-label="why"
-                    aria-describedby="why do you feel this way"
+                    placeholder="Enter name"
                     className="bold mb-2 w-100 form-shadow"
                     size="lg"
                   />
                 )}
               />
-              {/* Error output */}
-              {/* /Why Text Box */}
-
-              {/* Date */}
-              <Card.Subtitle className="pt-1 text-muted bold">
-                <i className="bi bi-calendar-event"></i>{" "}
-                {new Date().toLocaleString()}
-              </Card.Subtitle>
-              {/* /Date */}
+            </div>
+            <div className="display-6 mb-5" onClick={() => setShowEntry(false)}>
+              <CloseButton />
             </div>
           </div>
-          {/* Error output */}
-          {errors.title && (
-            <Alert variant="dark" className="mt-2 mb-0">
-              {errors.title.message}
+          {errors.name && (
+            <Alert variant="dark" className="mb-2 mb-0">
+              {errors.name.message}
             </Alert>
           )}
-          {/* Error output */}
 
-          {/* Mood Range Slider */}
-          <Row>
-            <Col xs="2" className="text-center emoji">
-              😀
-            </Col>
-            <Col xs="8">
-              {/* Range Slider */}
+          <div className="d-flex align-items-center">
+            <div className="w-75 mx-auto">
               <Controller
-                name="mood"
+                name="operator"
                 control={control}
-                defaultValue={2}
-                render={({ field: { onChange, value } }) => (
-                  <Form.Range
-                    onChange={onChange}
-                    value={value}
-                    className="mt-3"
-                    min="0"
-                    max="4"
+                render={({ field }) => (
+                  <Form.Control
+                    {...field}
+                    type="text"
+                    placeholder="Enter operator"
+                    className="bold mb-2 form-shadow"
+                    size="lg"
                   />
                 )}
               />
-              {/* /Range Slider */}
-            </Col>
-            <Col xs="2" className="text-center emoji">
-              🤬
-            </Col>
-          </Row>
-          {/* /Mood Range Slider */}
-          {/* Why Text Box */}
-          <Controller
-            name="body"
-            control={control}
-            render={({ field }) => (
-              // Boostrap input text box component
-              <Form.Control
-                {...field}
-                as="textarea"
-                rows={3}
-                placeholder="Why are you feeling this way? What happened?"
-                aria-label="body"
-                aria-describedby="why do you feel this way?"
-                className="mb-2 w-100 form-shadow"
-              />
-            )}
-          />
-          {/* Error output */}
-          {errors.body && (
-            <Alert variant="dark" className="mt-2">
-              {errors.body.message}
+            </div>
+          </div>
+          {errors.operator && (
+            <Alert variant="dark" className="mb-2 mb-0">
+              {errors.operator.message}
             </Alert>
           )}
-          {/* /Error output */}
+
+          <div className="d-flex justify-content-between">
+            {/* Lontitutde enter */}
+            <div className="w-25 mx-auto">
+              <Controller
+                name="lon"
+                control={control}
+                defaultValue={""}
+                render={({ field }) => (
+                  <Form.Control
+                    {...field}
+                    type="text"
+                    placeholder="Enter lon"
+                    className="bold mb-2 form-shadow"
+                    size="lg"
+                  />
+                )}
+              />
+            </div>
+            {/* latititude enter */}
+            <div className="w-25 mx-auto">
+              <Controller
+                name="lat"
+                control={control}
+                defaultValue={""}
+                render={({ field }) => (
+                  <Form.Control
+                    {...field}
+                    type="text"
+                    placeholder="Enter lat"
+                    className="bold mb-2 form-shadow"
+                    size="lg"
+                  />
+                )}
+              />
+            </div>
+          </div>
+          {errors.lon && (
+            <Alert variant="dark" className="mt-0 mb-0">
+              {errors.lon.message}
+            </Alert>
+          )}
+          {errors.lat && (
+            <Alert variant="dark" className="mt-2 mb-0">
+              {errors.lat.message}
+            </Alert>
+          )}
+
+          <div className="d-flex justify-content-between">
+            <Controller
+              name="male"
+              control={control}
+              render={({ field }) => (
+                <Form.Group controlId="male" className="mt-2">
+                  <Form.Label>Male toilet</Form.Label>
+                  <div>
+                    <Form.Check
+                      {...field}
+                      type="radio"
+                      label="Yes"
+                      value="true"
+                      inline
+                    />
+                    <Form.Check
+                      {...field}
+                      type="radio"
+                      label="No"
+                      value="false"
+                      inline
+                    />
+                  </div>
+                  {errors.male && (
+                    <Alert variant="danger" className="mt-2 alert-dark mb-0">
+                      {errors.male.message}
+                    </Alert>
+                  )}
+                </Form.Group>
+              )}
+            />
+
+            <Controller
+              name="female"
+              control={control}
+              render={({ field }) => (
+                <Form.Group controlId="female" className="mt-2">
+                  <Form.Label>Female toilet</Form.Label>
+                  <div>
+                    <Form.Check
+                      {...field}
+                      type="radio"
+                      label="Yes"
+                      value="true"
+                      inline
+                    />
+                    <Form.Check
+                      {...field}
+                      type="radio"
+                      label="No"
+                      value="false"
+                      inline
+                    />
+                  </div>
+                  {errors.female && (
+                    <Alert variant="danger" className="mt-2 alert-dark mb-0">
+                      {errors.female.message}
+                    </Alert>
+                  )}
+                </Form.Group>
+              )}
+            />
+            <Controller
+              name="baby_facil"
+              control={control}
+              render={({ field }) => (
+                <Form.Group controlId="baby_facil" className="mt-2">
+                  <Form.Label>Baby Facility</Form.Label>
+                  <div>
+                    <Form.Check
+                      {...field}
+                      type="radio"
+                      label="Yes"
+                      value="true"
+                      inline
+                    />
+                    <Form.Check
+                      {...field}
+                      type="radio"
+                      label="No"
+                      value="false"
+                      inline
+                    />
+                  </div>
+                  {errors.baby_facil && (
+                    <Alert variant="danger" className="mt-2 alert-dark mb-0">
+                      {errors.baby_facil.message}
+                    </Alert>
+                  )}
+                </Form.Group>
+              )}
+            />
+            <Controller
+              name="wheelchair"
+              control={control}
+              render={({ field }) => (
+                <Form.Group controlId="wheelchair" className="mt-2">
+                  <Form.Label>Wheelchair accessible</Form.Label>
+                  <div>
+                    <Form.Check
+                      {...field}
+                      type="radio"
+                      label="Yes"
+                      value="true"
+                      inline
+                    />
+                    <Form.Check
+                      {...field}
+                      type="radio"
+                      label="No"
+                      value="false"
+                      inline
+                    />
+                  </div>
+                  {errors.wheelchair && (
+                    <Alert variant="danger" className="mt-2 alert-dark mb-0">
+                      {errors.wheelchair.message}
+                    </Alert>
+                  )}
+                </Form.Group>
+              )}
+            />
+          </div>
           {/* Submit Button */}
           <Button
             variant="dark"
             size="lg"
             block="true"
-            className="w-100"
+            className="w-100 mt-5"
             type="submit"
           >
-            Submit <i className="bi bi-send-fill"></i>
+            Create <i className="bi bi-send-fill"></i>
           </Button>
           {/* Submit Button */}
         </Form>
@@ -226,4 +389,4 @@ function JournalEntry(props) {
   );
 }
 
-export default JournalEntry;
+export default ToiletEntry;

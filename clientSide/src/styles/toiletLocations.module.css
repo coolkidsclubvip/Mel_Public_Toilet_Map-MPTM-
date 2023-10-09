@@ -1,0 +1,28 @@
+.addCard {
+     height: 10rem;
+     padding: 2.5rem;
+}
+
+
+.addCard:hover {
+     cursor: pointer;
+   
+}
+
+.circle {
+    background-color: #F8B12E;
+     border-radius: 4rem;
+     width: 4rem;
+     height: 4rem;
+     color: white;
+         box-shadow: 2px 2px 8px  rgba(0, 0, 0,0.8);
+   
+    
+}
+
+.circle:hover {
+     width: 4rem;
+     height: 4rem;
+     background-color: #fda90d;
+     box-shadow: 2px 2px 8px  rgba(0, 0, 0,0.5);
+}

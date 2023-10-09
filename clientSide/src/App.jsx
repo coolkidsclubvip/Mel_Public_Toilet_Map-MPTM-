@@ -5,13 +5,15 @@ import { Container } from "react-bootstrap"; // React Bootstrap Library
 
 // Import custom components
 import Header from "./Components/Header";
-import Toilets from "./Pages/Toilets";
+import ToiletLocations from "./Pages/ToiletLocations";
 import Profile from "./Pages/Profile";
-// import JournalEntryEdit from "./Pages/JournalEntryEdit";
+import ToiletEntry from "./Components/ToiletEntry";
+import ToiletEdit from "./Components/ToiletEdit";
 import Login from "./Pages/Login";
 import SignUp from "./Pages/SignUp";
 import NotFound from "./Pages/NotFound";
 import { ToastContainer } from "react-toastify";
+
 
 //? APOLLO CLIENT
 // Import Apollo Client and related dependencies
@@ -46,7 +48,7 @@ function App() {
   function saveTokenToSessionStorage(user) {
     sessionStorage.setItem("user", JSON.stringify(user)); // Save user to session storage as a string
   }
-
+  console.log("user to be save to session storage is:",user);
   //Gets user from Session Storage
   const getUserFromSessionStorage = () => {
     try {
@@ -85,7 +87,7 @@ function App() {
       {/* Apollo Provider wraps the entire app to provide access to the Apollo Client */}{" "}
       {/* 这是Apollo Client库提供的顶级组件，用于将GraphQL客户端与React应用程序集成在一起，以便在组件中使用GraphQL查询和数据。 */}
       <ApolloProvider client={client}>
-        <Container className="min-width">
+        <Container fluid className="min-width p-0">
           <ToastContainer
             position="top-right"
             autoClose={5000}
@@ -107,19 +109,25 @@ function App() {
             {/*This is a routing configuration for the main page. When the root path "/" is specified, the ProtectedRoute component should be rendered, and the Toilet component is passed as the component attribute and the current user user */}
             <Route
               path="/"
-              element={<ProtectedRoute component={Toilets} user={user} />}
+              element={
+                <ProtectedRoute component={ToiletLocations} user={user} />
+              }
             />
             <Route
               path="/profile"
               element={<ProtectedRoute component={Profile} user={user} />}
             />
+            <Route
+              path="/addLocation"
+              element={<ProtectedRoute component={ToiletEntry} user={user} />}
+            />
             {/* Protected Journal Entry Edit Route */}
-            {/* <Route
-              path="/journal/edit/:journalEntryId"
+            <Route
+              path="/toiletLocations/edit/:toiletLocationId"
               element={
-                <ProtectedRoute component={JournalEntryEdit} user={user} />
+                <ProtectedRoute component={ToiletEdit} user={user} />
               }
-            /> */}
+            />
             {/* 404 Page */}
             <Route path="*" element={<NotFound />} />
           </Routes>

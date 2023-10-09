@@ -1,5 +1,4 @@
 //React
-import { useState } from "react";
 import { Controller, useForm } from "react-hook-form"; // React Hook Forms
 import Joi from "joi"; // Joi Validation
 import { joiResolver } from "@hookform/resolvers/joi"; // Joi Resolver for React Hook Forms
@@ -72,7 +71,7 @@ function Login({ onLogin }) {
   
 
   return (
-    <Card className={"shadow m-3 mt-5 bg-3"}>
+    <Card className={"shadow m-3 mt-5 bg-3 w-50 mx-auto"}>
       <Card.Body>
         {/* Form Header */}
         <div className="d-flex mb-3">

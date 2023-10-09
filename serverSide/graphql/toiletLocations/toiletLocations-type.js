@@ -14,15 +14,15 @@ const ToiletLocationType = gql`
     lat: Float!
   }
 
-  input addToiletLocationInput {
-    name: String!
-    female: Boolean!
-    male: Boolean!
-    wheelchair: Boolean!
-    operator: String!
-    baby_facil: Boolean!
-    lon: Float!
-    lat: Float!
+  input createToiletLocationInput {
+    name: String
+    female: Boolean
+    male: Boolean
+    wheelchair: Boolean
+    operator: String
+    baby_facil: Boolean
+    lon: Float
+    lat: Float
   }
   input updateToiletLocationInput {
     name: String
@@ -31,7 +31,8 @@ const ToiletLocationType = gql`
     wheelchair: Boolean
     operator: String
     baby_facil: Boolean
-  # location can not be updated
+    lon: Float
+    lat: Float
   }
 
   type Query {
@@ -40,8 +41,11 @@ const ToiletLocationType = gql`
   }
 
   type Mutation {
-    addToiletLocation(input: addToiletLocationInput): toiletLocation
-    updateToiletLocation(id: ID!, input: updateToiletLocationInput): toiletLocation
+    createToiletLocation(input: createToiletLocationInput!): toiletLocation
+    updateToiletLocation(
+      id: ID!
+      input: updateToiletLocationInput
+    ): toiletLocation
     deleteToiletLocation(id: ID!): toiletLocation
   }
 `;

@@ -1,0 +1,27 @@
+.card {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border: none;
+}
+
+.img{
+    background-image: url("../images/groupthink-blog-650x650-c-default.jpg");
+    height: 39vh;
+    background-size: cover;
+    background-position: top right;
+    
+}
+
+.button {
+    background-color: #FAA100;
+    border: none;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+
+
+
+}
+
+.button:hover {
+
+    background-color: #f8b12e;
+    text-decoration: none;
+}

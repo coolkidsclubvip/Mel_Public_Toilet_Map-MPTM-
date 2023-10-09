@@ -2,7 +2,15 @@
 import { Nav, Container } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEarthOceania } from "@fortawesome/free-solid-svg-icons";
+import {
+  faEarthOceania,
+  faMapLocation,
+  faUserGear,
+  faRightFromBracket,
+  faRightToBracket,
+  faUserPlus,
+} from "@fortawesome/free-solid-svg-icons";
+import styles from "../styles/header.module.css";
 
 // Defining the Header component that takes in the user and onLogout props
 // user - The user object
@@ -10,72 +18,103 @@ import { faEarthOceania } from "@fortawesome/free-solid-svg-icons";
 function Header({ user, onLogout }) {
   // Returning the JSX for the Header component
   return (
-    <Container fluid>
-      <Nav className=" justify-content-center d-flex flex-row bg-light w-100">
-        {/* Rendering the title */}
-        <div className="d-flex align-items-center">
-          <div className="mr-2">
-            <div className="rounded-circle ">
-              <FontAwesomeIcon
-                icon={faEarthOceania}
-                size="2xl"
-                style={{ color: "#FAA100" }}
-                className="logo"
-              />
+    <div className={styles.wrapper}>
+      <Container>
+        <Nav className=" justify-content-center d-flex flex-row w-100">
+          {/* Rendering the title */}
+          <div className="d-flex align-items-center">
+            <div className="mr-2">
+              <div className="rounded-circle ">
+                <FontAwesomeIcon
+                  icon={faEarthOceania}
+                  size="2xl"
+                  style={{
+                    background: "linear-gradient(to top, #0dcaf0,red)",
+                  }}
+                  className="logo"
+                />
+              </div>
+            </div>
+            <div>
+              <Link to="/" className="text-decoration-none">
+                <h1 className="display-3 text-black bold p-0 m-0">
+                  Melbourne Public Toilet Map
+                </h1>
+              </Link>
             </div>
           </div>
-          <div>
-            <Link to="/" className="text-decoration-none">
-              <h1 className="display-3 text-black bold p-0 m-0">
-                Melbourne Public Toilet Map
-              </h1>
-            </Link>
+          <br />
+          {/* <h3>Let MPTM save your day!</h3> */}
+
+          {/* Rendering the navigation links */}
+          <div className="d-flex">
+            {/* Rendering the toilet locations ONLY WHEN logged in */}
+            {user ? (
+              <Link to="/" className="nav-link background-hover px-3 m-3">
+                <FontAwesomeIcon
+                  icon={faMapLocation}
+                  size="lg"
+                  style={{ color: "#000000" }}
+                />{" "}
+                Locations
+              </Link>
+            ) : (
+              <div className="nav-link "></div>
+            )}
+
+            {/* Rendering the user profile and logout links if the user is logged in */}
+            {user ? (
+              <>
+                <Link
+                  to="profile"
+                  className="nav-link background-hover  px-3 m-3"
+                >
+                  <FontAwesomeIcon
+                    icon={faUserGear}
+                    size="lg"
+                    style={{ color: "#000000" }}
+                  />{" "}
+                  {user.username}
+                </Link>
+
+                <button
+                  onClick={onLogout}
+                  className="background-hover  px-3 m-3"
+                >
+                  <FontAwesomeIcon
+                    icon={faRightFromBracket}
+                    size="xl"
+                    style={{ color: "#000000" }}
+                  />{" "}
+                  Logout
+                </button>
+              </>
+            ) : (
+              // Rendering the sign up and login links if the user is not logged in
+              <>
+                <Link
+                  to="signup"
+                  className="nav-link background-hover px-3 m-3"
+                >
+                  <FontAwesomeIcon
+                    icon={faUserPlus}
+                    style={{ color: "black" }}
+                  />{" "}
+                  Sign Up
+                </Link>
+                <Link to="login" className="nav-link background-hover px-3 m-3">
+                  <FontAwesomeIcon
+                    icon={faRightToBracket}
+                    style={{ color: "black" }}
+                  />
+                  {""} Login
+                </Link>
+              </>
+            )}
           </div>
-        </div>
-        <br />
-        {/* <h3>Let MPTM save your day!</h3> */}
-
-        {/* Rendering the navigation links */}
-        <div className="d-flex">
-          {/* Rendering the toilet locations ONLY WHEN logged in */}
-          {user ? (
-            <Link to="/" className="nav-link background-hover px-3">
-              Locations
-              <i className="bi bi-journal-bookmark-fill ms-2"></i>
-            </Link>
-          ) : (
-            <div className="nav-link px-5"></div>
-          )}
-
-          {/* Rendering the user profile and logout links if the user is logged in */}
-          {user ? (
-            <>
-              <Link to="profile" className="nav-link background-hover px-3">
-                {user.username}
-                <i className="bi bi-person-fill ms-2"></i>
-              </Link>
-
-              <button onClick={onLogout} className="background-hover px-3">
-                Logout
-                <i className="bi bi-person-badge ms-2"></i>
-              </button>
-            </>
-          ) : (
-            // Rendering the sign up and login links if the user is not logged in
-            <>
-              <Link to="signup" className="nav-link background-hover px-3">
-                Sign Up
-                <i className="bi bi-person-badge ms-2"></i>
-              </Link>
-              <Link to="login" className="nav-link background-hover px-3">
-                Login
-                <i className="bi bi-person-badge ms-2"></i>
-              </Link>
-            </>
-          )}
-        </div>
-      </Nav>
-    </Container>
+        </Nav>
+      </Container>
+    </div>
   );
 }
 

@@ -78,7 +78,7 @@ function SignUp({ onLogin }) {
   };
 
   return (
-    <Card className={"shadow m-3 bg-2 mt-5"}>
+    <Card className={"shadow m-3 bg-1 mt-5 w-50 mx-auto"}>
       <Card.Body>
         {/* Form Header */}
         <div className="d-flex mb-3">
@@ -86,7 +86,7 @@ function SignUp({ onLogin }) {
             {
               <FontAwesomeIcon
                 icon={faUserPlus}
-                style={{ color: " #007100" }}
+                style={{ color: " #0DBEE6" }}
               />
             }
           </div>
