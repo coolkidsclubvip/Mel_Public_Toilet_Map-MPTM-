@@ -15,6 +15,7 @@ import { useMutation } from "@apollo/client";
 import { CREATE_USER } from "../graphQL/mutations/mutations";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserPlus } from "@fortawesome/free-solid-svg-icons";
+import styles from "../styles/signUp.module.css";
 
 function SignUp({ onLogin }) {
   //JOI Validation for React-Hook-Forms
@@ -78,155 +79,157 @@ function SignUp({ onLogin }) {
   };
 
   return (
-    <Card className={"shadow m-3 bg-1 mt-5 w-50 mx-auto"}>
-      <Card.Body>
-        {/* Form Header */}
-        <div className="d-flex mb-3">
-          <div className="emoji display-6 me-2 p-2 rounded-circle inner-shadow-emoji">
-            {
-              <FontAwesomeIcon
-                icon={faUserPlus}
-                style={{ color: " #0DBEE6" }}
-              />
-            }
+    <div className={styles.container}>
+      <Card className={"d-flex shadow m-3 bg-1 mt-5 w-50 mx-auto"}>
+        <Card.Body>
+          {/* Form Header */}
+          <div className="d-flex mb-3">
+            <div className="emoji display-6 me-2 p-2 rounded-circle inner-shadow-emoji">
+              {
+                <FontAwesomeIcon
+                  icon={faUserPlus}
+                  style={{ color: " #0DBEE6" }}
+                />
+              }
+            </div>
+            <div className="title">
+              <Card.Title className="bold text-white">Sign Up</Card.Title>
+              <Card.Subtitle className="mb-2 text-muted">
+                <i className="bi bi-calendar-event"></i>{" "}
+                {new Date().toLocaleDateString()}
+              </Card.Subtitle>
+            </div>
           </div>
-          <div className="title">
-            <Card.Title className="bold text-white">Sign Up</Card.Title>
-            <Card.Subtitle className="mb-2 text-muted">
-              <i className="bi bi-calendar-event"></i>{" "}
-              {new Date().toLocaleDateString()}
-            </Card.Subtitle>
-          </div>
-        </div>
-        {/* /Form Header */}
-        {/* 使用了 noValidate 属性来阻止浏览器默认的表单验证 */}
-        <Form noValidate="noValidate" onSubmit={handleSubmit(onSubmit)}>
-          {/* Email Text Box */}
-          <Controller
-            name="username"
-            control={control}
-            render={({ field }) => (
-              // Bootstrap input text box component
-              <Form.Group controlId="username">
-                <Form.Label className="visually-hidden">Username</Form.Label>
-                <Form.Control
-                  {...field} // 将字段的值和事件处理程序绑定到输入元素
-                  type="text"
-                  placeholder="Username"
-                  size="lg"
-                  className="form-shadow mb-2"
-                />
-                {errors.username && (
-                  <Alert variant="danger" className="mb-2 alert-dark mb-0">
-                    {errors.username.message}
-                  </Alert>
-                )}
-              </Form.Group>
-            )}
-          />
-          {/* /Email Text Box */}
-          {/* Email Text Box */}
-          <Controller
-            name="email"
-            control={control}
-            render={({ field }) => (
-              // Bootstrap input text box component
-              <Form.Group controlId="email">
-                <Form.Label className="visually-hidden">
-                  Email address
-                </Form.Label>
-                <Form.Control
-                  {...field}
-                  type="email"
-                  placeholder="Enter email"
-                  size="lg"
-                  className="form-shadow"
-                />
-                {errors.email && (
-                  <Alert variant="danger" className="mt-2 alert-dark mb-0">
-                    {errors.email.message}
-                  </Alert>
-                )}
-              </Form.Group>
-            )}
-          />
-          {/* /Email Text Box */}
-          {/* Password Text Box */}
-          <Controller
-            name="password"
-            control={control}
-            render={({ field }) => (
-              // Bootstrap input text box component
-              <Form.Group controlId="password" className="mt-2">
-                <Form.Label className="visually-hidden">Password</Form.Label>
-                <Form.Control
-                  {...field}
-                  type="password"
-                  placeholder="Password"
-                  size="lg"
-                  className="form-shadow"
-                />
-                {errors.password && (
-                  <Alert variant="danger" className="mt-2 alert-dark mb-0">
-                    {errors.password.message}
-                  </Alert>
-                )}
-              </Form.Group>
-            )}
-          />
-          {/* isAdmin radio box */}
-          <Controller
-            name="isAdmin"
-            control={control}
-            render={({ field }) => (
-              <Form.Group controlId="isAdmin" className="mt-2">
-                <Form.Label>Are you an admin?</Form.Label>
-                <div>
-                  <Form.Check
-                    {...field}
-                    type="radio"
-                    // id="isAdminTrue"
-                    label="Yes"
-                    value="true"
-                    inline
+          {/* /Form Header */}
+          {/* 使用了 noValidate 属性来阻止浏览器默认的表单验证 */}
+          <Form noValidate="noValidate" onSubmit={handleSubmit(onSubmit)}>
+            {/* Email Text Box */}
+            <Controller
+              name="username"
+              control={control}
+              render={({ field }) => (
+                // Bootstrap input text box component
+                <Form.Group controlId="username">
+                  <Form.Label className="visually-hidden">Username</Form.Label>
+                  <Form.Control
+                    {...field} // 将字段的值和事件处理程序绑定到输入元素
+                    type="text"
+                    placeholder="Username"
+                    size="lg"
+                    className="form-shadow mb-2"
                   />
-                  <Form.Check
+                  {errors.username && (
+                    <Alert variant="danger" className="mb-2 alert-dark mb-0">
+                      {errors.username.message}
+                    </Alert>
+                  )}
+                </Form.Group>
+              )}
+            />
+            {/* /Email Text Box */}
+            {/* Email Text Box */}
+            <Controller
+              name="email"
+              control={control}
+              render={({ field }) => (
+                // Bootstrap input text box component
+                <Form.Group controlId="email">
+                  <Form.Label className="visually-hidden">
+                    Email address
+                  </Form.Label>
+                  <Form.Control
                     {...field}
-                    type="radio"
-                    // id="isAdminFalse"
-                    label="No"
-                    value="false"
-                    inline
+                    type="email"
+                    placeholder="Enter email"
+                    size="lg"
+                    className="form-shadow"
                   />
-                </div>
-                {errors.isAdmin && (
-                  <Alert variant="danger" className="mt-2 alert-dark mb-0">
-                    {errors.isAdmin.message}
-                  </Alert>
-                )}
-              </Form.Group>
-            )}
-          />
+                  {errors.email && (
+                    <Alert variant="danger" className="mt-2 alert-dark mb-0">
+                      {errors.email.message}
+                    </Alert>
+                  )}
+                </Form.Group>
+              )}
+            />
+            {/* /Email Text Box */}
+            {/* Password Text Box */}
+            <Controller
+              name="password"
+              control={control}
+              render={({ field }) => (
+                // Bootstrap input text box component
+                <Form.Group controlId="password" className="mt-2">
+                  <Form.Label className="visually-hidden">Password</Form.Label>
+                  <Form.Control
+                    {...field}
+                    type="password"
+                    placeholder="Password"
+                    size="lg"
+                    className="form-shadow"
+                  />
+                  {errors.password && (
+                    <Alert variant="danger" className="mt-2 alert-dark mb-0">
+                      {errors.password.message}
+                    </Alert>
+                  )}
+                </Form.Group>
+              )}
+            />
+            {/* isAdmin radio box */}
+            <Controller
+              name="isAdmin"
+              control={control}
+              render={({ field }) => (
+                <Form.Group controlId="isAdmin" className="mt-2">
+                  <Form.Label>Are you an admin?</Form.Label>
+                  <div>
+                    <Form.Check
+                      {...field}
+                      type="radio"
+                      // id="isAdminTrue"
+                      label="Yes"
+                      value="true"
+                      inline
+                    />
+                    <Form.Check
+                      {...field}
+                      type="radio"
+                      // id="isAdminFalse"
+                      label="No"
+                      value="false"
+                      inline
+                    />
+                  </div>
+                  {errors.isAdmin && (
+                    <Alert variant="danger" className="mt-2 alert-dark mb-0">
+                      {errors.isAdmin.message}
+                    </Alert>
+                  )}
+                </Form.Group>
+              )}
+            />
 
-          {/* Submit Button */}
-          <Button
-            variant="dark"
-            size="lg"
-            block="true"
-            className="w-100 mt-2"
-            type="submit"
-          >
-            Login <i className="bi bi-send-fill"></i>
-          </Button>
-          {/* /Submit Button */}
-        </Form>
-        {/* Login Link */}
-        <p className="m-0 mt-1">
-          Already have an account? <Link to="/signup">Login</Link> now!
-        </p>
-        {/* Login Link */}
-      </Card.Body>
-    </Card>
+            {/* Submit Button */}
+            <Button
+              variant="dark"
+              size="lg"
+              block="true"
+              className="w-100 mt-2"
+              type="submit"
+            >
+              Login <i className="bi bi-send-fill"></i>
+            </Button>
+            {/* /Submit Button */}
+          </Form>
+          {/* Login Link */}
+          <p className="m-0 mt-1">
+            Already have an account? <Link to="/signup">Login</Link> now!
+          </p>
+          {/* Login Link */}
+        </Card.Body>
+      </Card>
+    </div>
   );
 }
 export default SignUp;

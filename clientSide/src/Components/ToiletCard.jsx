@@ -109,11 +109,12 @@ function ToiletCard({ location, user,setShowEdit,toiletLocationId,setToiletLocat
         <Card.Body>
           <div className="d-flex">
             {/* <!--The div element for the map --> */}
-            <Map lng={location.lon} lat={location.lat} />
+            <div className={styles.mapSmall}>
+            <Map location={location} /></div>
 
             {/* Displays the title and date of the journal entry */}
-            <div className="title w-75">
-              <Card.Title className="">{location.name}</Card.Title>
+            <div className="title w-75 ">
+              <Card.Title className="px-1">{location.name}</Card.Title>
               <Card.Subtitle className="mb-2 text-muted">
                 Operater:{location.operator}
               </Card.Subtitle>
@@ -146,7 +147,7 @@ function ToiletCard({ location, user,setShowEdit,toiletLocationId,setToiletLocat
                   <FontAwesomeIcon
                     icon={faBabyCarriage}
                     size="xl"
-                    style={{ color: "#14e147" }}
+                    style={{ color: "green" }}
                   />
                 ) : null}
               </span>

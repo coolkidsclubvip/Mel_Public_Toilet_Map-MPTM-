@@ -3,7 +3,8 @@
     flex-direction: column;
 
      width: 100vw;
+     height: 16vh;
      background-color:#F8B12E ;
-     margin-bottom: 5rem;
+     /* margin-bottom: 5rem; */
 }
 

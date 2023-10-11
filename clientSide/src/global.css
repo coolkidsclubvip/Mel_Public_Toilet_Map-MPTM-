@@ -1,10 +1,7 @@
-body {
-
-  /* background-image: url("/groupthink-blog-650x650-c-default.jpg");
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-size: cover; */
-
+body,
+html {
+  height: 100%;
+  width: 100%;
 }
 
 
@@ -144,12 +141,10 @@ a:hover {
 
 
 #map {
-  height: 200px;
+  height: 100%;
 
-  width:90%;
+  width: 100%;
 
-  /* background-color: red; */
-  margin: 1rem;
 }
 
 /*Chrome*/

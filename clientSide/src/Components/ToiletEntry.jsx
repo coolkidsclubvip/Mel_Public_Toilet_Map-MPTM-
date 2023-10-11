@@ -203,23 +203,6 @@ function ToiletEntry({ user, setShowEntry, refetch }) {
           )}
 
           <div className="d-flex justify-content-between">
-            {/* Lontitutde enter */}
-            <div className="w-25 mx-auto">
-              <Controller
-                name="lon"
-                control={control}
-                defaultValue={""}
-                render={({ field }) => (
-                  <Form.Control
-                    {...field}
-                    type="text"
-                    placeholder="Enter lon"
-                    className="bold mb-2 form-shadow"
-                    size="lg"
-                  />
-                )}
-              />
-            </div>
             {/* latititude enter */}
             <div className="w-25 mx-auto">
               <Controller
@@ -231,6 +214,23 @@ function ToiletEntry({ user, setShowEntry, refetch }) {
                     {...field}
                     type="text"
                     placeholder="Enter lat"
+                    className="bold mb-2 form-shadow"
+                    size="lg"
+                  />
+                )}
+              />
+            </div>
+            {/* Lontitutde enter */}
+            <div className="w-25 mx-auto">
+              <Controller
+                name="lon"
+                control={control}
+                defaultValue={""}
+                render={({ field }) => (
+                  <Form.Control
+                    {...field}
+                    type="text"
+                    placeholder="Enter lon"
                     className="bold mb-2 form-shadow"
                     size="lg"
                   />

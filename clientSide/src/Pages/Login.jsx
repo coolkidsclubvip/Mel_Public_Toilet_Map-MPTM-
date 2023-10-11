@@ -12,6 +12,7 @@ import { LOGIN_USER } from "../graphQL/mutations/mutations";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faRightToBracket } from "@fortawesome/free-solid-svg-icons";
 import { toast } from "react-toastify";
+import styles from "../styles/login.module.css";
 
 function Login({ onLogin }) {
   // JOI Validation for React-Hook-Forms
@@ -71,6 +72,7 @@ function Login({ onLogin }) {
   
 
   return (
+    <div className={styles.container}>
     <Card className={"shadow m-3 mt-5 bg-3 w-50 mx-auto"}>
       <Card.Body>
         {/* Form Header */}
@@ -166,6 +168,7 @@ function Login({ onLogin }) {
         </Form>
       </Card.Body>
     </Card>
+    </div>
   );
 }
 

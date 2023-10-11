@@ -5,6 +5,7 @@ import { Container } from "react-bootstrap"; // React Bootstrap Library
 
 // Import custom components
 import Header from "./Components/Header";
+import Footer from "./Components/Footer";
 import ToiletLocations from "./Pages/ToiletLocations";
 import Profile from "./Pages/Profile";
 import ToiletEntry from "./Components/ToiletEntry";
@@ -87,7 +88,11 @@ function App() {
       {/* Apollo Provider wraps the entire app to provide access to the Apollo Client */}{" "}
       {/* 这是Apollo Client库提供的顶级组件，用于将GraphQL客户端与React应用程序集成在一起，以便在组件中使用GraphQL查询和数据。 */}
       <ApolloProvider client={client}>
-        <Container fluid className="min-width p-0">
+        <Container
+          fluid
+          className="min-width p-0"
+         
+        >
           <ToastContainer
             position="top-right"
             autoClose={5000}
@@ -124,13 +129,12 @@ function App() {
             {/* Protected Journal Entry Edit Route */}
             <Route
               path="/toiletLocations/edit/:toiletLocationId"
-              element={
-                <ProtectedRoute component={ToiletEdit} user={user} />
-              }
+              element={<ProtectedRoute component={ToiletEdit} user={user} />}
             />
             {/* 404 Page */}
             <Route path="*" element={<NotFound />} />
           </Routes>
+          <Footer />
         </Container>
       </ApolloProvider>
     </BrowserRouter>
