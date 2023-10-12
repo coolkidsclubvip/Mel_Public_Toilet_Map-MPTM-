@@ -156,7 +156,7 @@ function ToiletEdit({ user, setShowEdit, refetch, toiletLocationId }) {
                   style={{ color: "white" }}
                 />
               </div>
-              <div className="w-75 ms-3">
+              <div className="w-75 ms-3 ">
                 <Controller
                   name="name"
                   control={control}
@@ -211,7 +211,7 @@ function ToiletEdit({ user, setShowEdit, refetch, toiletLocationId }) {
 
             <div className="d-flex justify-content-between">
               {/* Lontitutde enter */}
-              <div className="w-25 mx-auto">
+              <div className="w-25 mx-auto mt-2">
                 <Controller
                   name="lon"
                   control={control}
@@ -228,7 +228,7 @@ function ToiletEdit({ user, setShowEdit, refetch, toiletLocationId }) {
                 />
               </div>
               {/* latititude enter */}
-              <div className="w-25 mx-auto">
+              <div className="w-25 mx-auto mt-2">
                 <Controller
                   name="lat"
                   control={control}
@@ -246,7 +246,7 @@ function ToiletEdit({ user, setShowEdit, refetch, toiletLocationId }) {
               </div>
             </div>
             {errors.lon && (
-              <Alert variant="dark" className="mt-0 mb-0">
+              <Alert variant="dark" className="mt-2 mb-0">
                 {errors.lon.message}
               </Alert>
             )}

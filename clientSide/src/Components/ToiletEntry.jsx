@@ -58,7 +58,7 @@ function ToiletEntry({ user, setShowEntry, refetch }) {
     },
   });
 
-  //GraphQL Mutation for creating a journal entry
+  //GraphQL Mutation for creating a journal entry,createNewLocationGQL IS DOING THE HEAVY JOB!
   const [createNewLocationGQL] = useMutation(CREATE_TOILET_LOCATION, {
     //update the cache to add the new journal entry
     update(cache, { data: { createNewLocationGQL } }) {
@@ -91,7 +91,7 @@ function ToiletEntry({ user, setShowEntry, refetch }) {
     },
   });
 
-  //This function is used to create a journal entry
+  //This function is used to create a journal entry, 只是封装，传递数据靠createNewLocationGQL完成
   const createNewLocation = async (data, token) => {
     //Destructure the data object
     const { name, female, male, wheelchair, operator, baby_facil, lon, lat } =
@@ -128,7 +128,6 @@ function ToiletEntry({ user, setShowEntry, refetch }) {
 
   //onSubmit callback function
   const onSubmit = async (data) => {
-    // data.user = user.id; //Add the user id to the data object: why??????
     const { name, female, male, wheelchair, operator, baby_facil, lon, lat } =
       data; //Destructure the data object, from hook from?
 
@@ -204,7 +203,7 @@ function ToiletEntry({ user, setShowEntry, refetch }) {
 
           <div className="d-flex justify-content-between">
             {/* latititude enter */}
-            <div className="w-25 mx-auto">
+            <div className="w-25 mx-auto mt-2">
               <Controller
                 name="lat"
                 control={control}
@@ -221,7 +220,7 @@ function ToiletEntry({ user, setShowEntry, refetch }) {
               />
             </div>
             {/* Lontitutde enter */}
-            <div className="w-25 mx-auto">
+            <div className="w-25 mx-auto mt-2">
               <Controller
                 name="lon"
                 control={control}
@@ -239,7 +238,7 @@ function ToiletEntry({ user, setShowEntry, refetch }) {
             </div>
           </div>
           {errors.lon && (
-            <Alert variant="dark" className="mt-0 mb-0">
+            <Alert variant="dark" className="mt-2 mb-0">
               {errors.lon.message}
             </Alert>
           )}
@@ -249,7 +248,7 @@ function ToiletEntry({ user, setShowEntry, refetch }) {
             </Alert>
           )}
 
-          <div className="d-flex justify-content-between">
+          <div className="d-flex justify-content-between mt-2">
             <Controller
               name="male"
               control={control}

@@ -26,7 +26,7 @@ function ToiletCard({ location, user,setShowEdit,toiletLocationId,setToiletLocat
         authorization: `${user.token}`,
       },
     },
-    //update the cache to remove the deleted journal entry
+    //update the cache to remove the deleted journal entry, (so NO NEED TO REFETCH )
     update(cache) {
       cache.modify({
         fields: {

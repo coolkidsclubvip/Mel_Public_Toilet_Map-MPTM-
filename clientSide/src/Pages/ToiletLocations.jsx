@@ -6,10 +6,14 @@ import ToiletEntry from "../Components/ToiletEntry";
 import ToiletEdit from "../Components/ToiletEdit";
 import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import {
+  faTriangleExclamation,
+  faPlus,
+} from "@fortawesome/free-solid-svg-icons";
 import { GET_TOILET_LOCATIONS } from "../graphQL/queries/queries"; // Import GET_JOURNAL_ENTRIES query
 import styles from "../styles/toiletLocations.module.css";
 import Map from "../googleMap/Map";
+import Loader from "../Components/Loader";
 
 function ToiletLocations({ user }) {
   // click Add toilet button to show ToiletEntry panel
@@ -33,14 +37,25 @@ function ToiletLocations({ user }) {
     refetch(); // Refetch the query
   }, []);
 
-  if (loading) return <p>Loading... 🤔</p>; //If the request is in progress, display a loading message
-  if (error) return <p>Error: No toilets😭</p>; //If the request fails, display an error message
+  if (loading) return <Loader />; //If the request is in progress, display a loading message
+  if (error)
+    return (
+      <div style={{ height: "79vh", textAlign: "center", paddingTop: "35vh" }}>
+        <FontAwesomeIcon
+          icon={faTriangleExclamation}
+          size="2xl"
+          style={{ color: "#000000" }}
+        />{" "}
+        No data can be retrieved this time, try again later
+      </div>
+    ); //If the request fails, display an error message
 
   const locations = data.toiletLocations;
 
   return (
     <div className={styles.container}>
       {/* <MapCluster locations={locations} /> */}
+
       {/* BIG MAAAAAAAP*/}
       <div className={styles.mapContainer}>
         <Map location={locations} />
@@ -102,6 +117,7 @@ function ToiletLocations({ user }) {
             </Card>
           </Col>
 
+          {/* mapping all locations from the database */}
           {locations.map((location) => (
             <Col sm={6} md={6} lg={4} className="mb-3" key={location.id}>
               <ToiletCard
