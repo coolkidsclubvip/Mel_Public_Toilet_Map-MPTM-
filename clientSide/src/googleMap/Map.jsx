@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { GoogleMap, useLoadScript, Marker } from "@react-google-maps/api";
+import Loader from "../Components/Loader";
 
 function Map({ location }) {
   const { isLoaded } = useLoadScript({
@@ -43,7 +44,7 @@ function Map({ location }) {
   }, [map, locations]);
 
   if (!isLoaded) {
-    return <div>Loading map...</div>;
+    return <Loader />;
   }
 
   const mapOptions = {

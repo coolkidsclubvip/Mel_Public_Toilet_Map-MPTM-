@@ -14,6 +14,7 @@ import { GET_TOILET_LOCATIONS } from "../graphQL/queries/queries"; // Import GET
 import styles from "../styles/toiletLocations.module.css";
 import Map from "../googleMap/Map";
 import Loader from "../Components/Loader";
+import { toast } from "react-toastify";
 
 function ToiletLocations({ user }) {
   // click Add toilet button to show ToiletEntry panel
@@ -87,20 +88,25 @@ function ToiletLocations({ user }) {
             <Card
               className={`shadow text-dark m-3 align-items-center ${styles.addCard}`}
               onClick={() => {
+                    if (!user.isAdmin) {
+                      return toast.error("You are not authorized!");
+                    }
                 setShowEntry(true);
               }}
             >
               <Card.Body>
                 <div className="d-flex">
-                  <div className="title w-75">
+                  <div className="title w-90 px-5">
                     <Card.Title className="bold">ADD A NEW LOO</Card.Title>
-                    <Card.Subtitle className="mb-2 text-muted">
+                    <Card.Subtitle className="mb-2 text-muted ">
                       Save the tourists from their misery!
                     </Card.Subtitle>
                   </div>
 
                   <div
                     onClick={() => {
+                        if (!user.isAdmin)
+                          return toast.error("You are not authorized!");
                       setShowEntry(true);
                     }}
                   >

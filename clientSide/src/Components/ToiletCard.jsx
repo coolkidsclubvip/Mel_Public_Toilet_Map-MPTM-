@@ -1,6 +1,5 @@
 import { Card, Button } from "react-bootstrap"; //import the Card and Button components from react bootstrap
 import { useMutation, gql } from "@apollo/client"; //import the useMutation hook from apollo client
-import { Link } from "react-router-dom"; //import the Link component
 import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -15,26 +14,32 @@ import { toast } from "react-toastify";
 import styles from "../styles/toiletCard.module.css";
 
 //This component is used to display the journal entries on the home page
-function ToiletCard({ location, user,setShowEdit,toiletLocationId,setToiletLocationId }) {
+function ToiletCard({
+  location,
+  user,
+  setShowEdit,
+  toiletLocationId,
+  setToiletLocationId,
+}) {
   // show deletion warning
   const [showWarning, setShowWarning] = useState(false);
 
-  //useMutation hook to delete journal entries
+  //useMutation hook to delete a location
   const [deleteJournalGQL] = useMutation(DELETE_TOILET_LOCATION, {
     context: {
       headers: {
         authorization: `${user.token}`,
       },
     },
-    //update the cache to remove the deleted journal entry, (so NO NEED TO REFETCH )
+    //update the cache to remove the deleted toilet location, (so NO NEED TO REFETCH )
     update(cache) {
       cache.modify({
         fields: {
-          //remove the deleted journal entry from the journalEntries array
+          //remove the deleted toilet location from the journalEntries array
           //existingEntries is the array of journal entries
           //readField is a function that reads a field from the cache
           toiletLocations(existingEntries = [], { readField }) {
-            //find the journal entry that was deleted and remove it from the array
+            //find the toilet location that was deleted and remove it from the array
             return existingEntries.filter(
               (entryRef) => location.id !== readField("id", entryRef)
             );
@@ -110,7 +115,8 @@ function ToiletCard({ location, user,setShowEdit,toiletLocationId,setToiletLocat
           <div className="d-flex">
             {/* <!--The div element for the map --> */}
             <div className={styles.mapSmall}>
-            <Map location={location} /></div>
+              <Map location={location} />
+            </div>
 
             {/* Displays the title and date of the journal entry */}
             <div className="title w-75 ">
@@ -156,12 +162,13 @@ function ToiletCard({ location, user,setShowEdit,toiletLocationId,setToiletLocat
             {/* Displays the edit and delete buttons */}
             <div className="ms-auto">
               <Button
-                
                 // to={`/toiletLocations/edit/${location.id}`}
                 variant="dark"
                 size="sm"
                 className="btn btn-dark rounded-circle inner-shadow"
                 onClick={() => {
+                  if (!user.isAdmin)
+                    return toast.error("You are not authorized!");
                   setShowEdit(true);
                   setToiletLocationId(location.id);
                 }}
@@ -173,6 +180,8 @@ function ToiletCard({ location, user,setShowEdit,toiletLocationId,setToiletLocat
                 size="sm"
                 className="rounded-circle inner-shadow mt-1"
                 onClick={() => {
+                  if (!user.isAdmin)
+                    return toast.error("You are not authorized!");
                   setShowWarning(true);
                 }}
               >

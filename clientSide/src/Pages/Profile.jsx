@@ -9,7 +9,7 @@ function Profile() {
   const userInfo = JSON.parse(sessionStorage.getItem("user"));
 
   return (
-    <Container className="d-flex justify-content-center align-items-center mt-5">
+    <Container className="d-flex justify-content-center align-items-center mt-5 mb-5">
       <Card className={styles.card}>
         <div className={styles.img}></div>
         <Card.Body>
@@ -40,7 +40,7 @@ function Profile() {
         </Card.Body>
         <Link to="/">
           <button className={`${styles.button} w-100 p-3 text-light`}>
-            BACK
+            Go back to Home Page
           </button>
         </Link>
       </Card>

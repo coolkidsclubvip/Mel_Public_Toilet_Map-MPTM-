@@ -24,6 +24,7 @@ const ToiletLocationType = gql`
     lon: Float
     lat: Float
   }
+  
   input updateToiletLocationInput {
     name: String
     female: Boolean
@@ -38,6 +39,7 @@ const ToiletLocationType = gql`
   type Query {
     toiletLocations: [toiletLocation]
     toiletLocation(id: ID!): toiletLocation
+    toiletLocationByName(name: String!): [toiletLocation]
   }
 
   type Mutation {

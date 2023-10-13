@@ -218,7 +218,7 @@ function SignUp({ onLogin }) {
               className="w-100 mt-2"
               type="submit"
             >
-              Login <i className="bi bi-send-fill"></i>
+              Sign up <i className="bi bi-send-fill"></i>
             </Button>
             {/* /Submit Button */}
           </Form>

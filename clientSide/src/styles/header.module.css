@@ -5,6 +5,7 @@
      width: 100vw;
      height: 16vh;
      background-color:#F8B12E ;
+     z-index: 99;
      /* margin-bottom: 5rem; */
 }
 

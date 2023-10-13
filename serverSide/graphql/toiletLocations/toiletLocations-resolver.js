@@ -11,6 +11,31 @@ const toiletLocationResolver = {
       return toiletLocations;
     },
 
+    toiletLocationByName: async (parent, args, context) => {
+      // Option 1: Search by input name string
+      console.log("args is:", args);
+      try {
+        const regex = new RegExp(args.name, "i"); // "i" Ignore case
+
+        const toiletLocations = await ToiletLocationsModel.find({
+          name: { $regex: regex },
+        });
+
+        if (!toiletLocations || toiletLocations.length === 0) {
+          throw new Error("Toilet locations not found");
+        }
+
+        return toiletLocations;
+      } catch (error) {
+        throw new GraphQLError(error, {
+          extensions: {
+            code: "FIND_TOILET_LOCATION_ERROR",
+          },
+        });
+      }
+    },
+
+    // Option2: Search by input ID
     toiletLocation: async (parent, args, context) => {
       try {
         const toiletLocation = await ToiletLocationsModel.findById(args.id);

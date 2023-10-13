@@ -14,11 +14,11 @@ import Login from "./Pages/Login";
 import SignUp from "./Pages/SignUp";
 import NotFound from "./Pages/NotFound";
 import { ToastContainer } from "react-toastify";
-
+import SearchResult from "./Pages/SearchResult";
 
 //? APOLLO CLIENT
 // Import Apollo Client and related dependencies
-// ApolloClient - Used to connect to the GraphQL server 
+// ApolloClient - Used to connect to the GraphQL server
 // InMemoryCache - Used to cache GraphQL data
 // ApolloProvider - Used to provide access to the Apollo Client
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
@@ -31,6 +31,7 @@ const client = new ApolloClient({
 
 function App() {
   const [user, setUser] = useState(null); // User state
+  const [searchText, setSearchText] = useState(""); // Search text state
 
   //Saves user to State and Session Storage
   const handleLogin = (user) => {
@@ -49,7 +50,7 @@ function App() {
   function saveTokenToSessionStorage(user) {
     sessionStorage.setItem("user", JSON.stringify(user)); // Save user to session storage as a string
   }
-  console.log("user to be save to session storage is:",user);
+
   //Gets user from Session Storage
   const getUserFromSessionStorage = () => {
     try {
@@ -88,11 +89,7 @@ function App() {
       {/* Apollo Provider wraps the entire app to provide access to the Apollo Client */}{" "}
       {/* 这是Apollo Client库提供的顶级组件，用于将GraphQL客户端与React应用程序集成在一起，以便在组件中使用GraphQL查询和数据。 */}
       <ApolloProvider client={client}>
-        <Container
-          fluid
-          className="min-width p-0"
-         
-        >
+        <Container fluid className="min-width p-0">
           <ToastContainer
             position="top-right"
             autoClose={5000}
@@ -106,7 +103,11 @@ function App() {
             theme="light"
           />
 
-          <Header user={user} onLogout={handleLogout} />
+          <Header
+            user={user}
+            onLogout={handleLogout}
+            setSearchText={setSearchText}
+          />
           <Routes>
             <Route path="/login" element={<Login onLogin={handleLogin} />} />
             <Route path="/signup" element={<SignUp onLogin={handleLogin} />} />
@@ -126,10 +127,21 @@ function App() {
               path="/addLocation"
               element={<ProtectedRoute component={ToiletEntry} user={user} />}
             />
-            {/* Protected Journal Entry Edit Route */}
+            {/* Protected location entry edit route */}
             <Route
               path="/toiletLocations/edit/:toiletLocationId"
               element={<ProtectedRoute component={ToiletEdit} user={user} />}
+            />
+            {/* Protected search result route */}
+            <Route
+              path="/searchresult"
+              element={
+                <ProtectedRoute
+                  component={SearchResult}
+                  searchText={searchText}
+                  user={user}
+                />
+              }
             />
             {/* 404 Page */}
             <Route path="*" element={<NotFound />} />

@@ -66,13 +66,13 @@ function ToiletEdit({ user, setShowEdit, refetch, toiletLocationId }) {
     },
   });
 
-  console.log("toiletLocationId is:", toiletLocationId);
+ 
 
   // onSubmit - Called when the form is submitted
   const onSubmit = async (formData) => {
     const { name, female, male, wheelchair, operator, baby_facil, lon, lat } =
       formData;
-    console.log("formData is:", formData);
+
     try {
       // update the toilet location
       await updateToiletLocationGQL({

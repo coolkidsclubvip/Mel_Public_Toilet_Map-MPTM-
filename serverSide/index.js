@@ -1,5 +1,6 @@
 // Import required external modules
 const { ApolloServer } = require('@apollo/server');
+const { GraphQLError } = require("graphql");
 const { startStandaloneServer } = require('@apollo/server/standalone');
 const jwt = require('jsonwebtoken');
 const glob = require('glob');

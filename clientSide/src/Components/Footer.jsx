@@ -10,7 +10,7 @@ function Footer() {
       {" "}
       <div>
         Lei{" "} 
-        <FontAwesomeIcon icon={faPoo} size="lg" style={{ color: "#F8B12E" }} />{" "}
+        <FontAwesomeIcon icon={faPoo} size="sm" style={{ color: "#F8B12E" }} />{" "}
         2023
       </div>
     </div>

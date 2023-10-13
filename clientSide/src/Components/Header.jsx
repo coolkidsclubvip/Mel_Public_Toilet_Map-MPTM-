@@ -1,4 +1,4 @@
-// Importing the Nav component from react-bootstrap and the Link component from react-router-dom
+import { useEffect, useState } from "react";
 import { Nav, Container } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -9,14 +9,17 @@ import {
   faRightFromBracket,
   faRightToBracket,
   faUserPlus,
+  faMagnifyingGlass,
 } from "@fortawesome/free-solid-svg-icons";
 import styles from "../styles/header.module.css";
+import SearchBar from "./SearchBar";
 
 // Defining the Header component that takes in the user and onLogout props
 // user - The user object
 // onLogout - The function to call when the user clicks the logout button
-function Header({ user, onLogout }) {
-  // Returning the JSX for the Header component
+function Header({ user, onLogout, searchText, setSearchText }) {
+  //
+
   return (
     <div className={styles.wrapper}>
       <Container>
@@ -111,6 +114,12 @@ function Header({ user, onLogout }) {
                 </Link>
               </>
             )}
+
+            {/* search bar */}
+
+            <SearchBar setSearchText={setSearchText} />
+
+            {/* search bar ends */}
           </div>
         </Nav>
       </Container>
