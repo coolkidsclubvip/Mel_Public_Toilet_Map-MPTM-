@@ -89,7 +89,7 @@ function App() {
       {/* Apollo Provider wraps the entire app to provide access to the Apollo Client */}{" "}
       {/* 这是Apollo Client库提供的顶级组件，用于将GraphQL客户端与React应用程序集成在一起，以便在组件中使用GraphQL查询和数据。 */}
       <ApolloProvider client={client}>
-        <Container fluid className="min-width p-0">
+        <Container fluid className=" min-width p-0">
           <ToastContainer
             position="top-right"
             autoClose={5000}

@@ -55,14 +55,16 @@ function ToiletLocations({ user }) {
 
   return (
     <div className={styles.container}>
-      {/* <MapCluster locations={locations} /> */}
-
       {/* BIG MAAAAAAAP*/}
       <div className={styles.mapContainer}>
         <Map location={locations} />
         {/* passing all locations to Map component */}
       </div>
       <div className="px-5 ">
+        <div className="d-flex mt-3 justify-content-center ">
+          {" "}
+          <h2>Current Locations: {locations.length}</h2>
+        </div>
         {/* hidden toilet ENTRY panel */}
         {showEntry && (
           <ToiletEntry

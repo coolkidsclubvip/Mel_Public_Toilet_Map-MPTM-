@@ -12,7 +12,7 @@ export const DELETE_TOILET_LOCATION = gql`
 export const CREATE_TOILET_LOCATION = gql`
   mutation createToiletLocation($input: createToiletLocationInput!) {
     createToiletLocation(input: $input) {
-      # id
+      id
       name
       female
       male

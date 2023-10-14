@@ -41,8 +41,6 @@ function ToiletEdit({ user, setShowEdit, refetch, toiletLocationId }) {
     },
   });
 
-  console.log("data in ToiletEdit is:", data);// data = location
-
   // GraphQL Mutation for updating a location
   const [updateToiletLocationGQL] = useMutation(UPDATE_TOILET_LOCATION, {
     // update the cache to update the journal entry
@@ -100,7 +98,7 @@ function ToiletEdit({ user, setShowEdit, refetch, toiletLocationId }) {
       toast.success("Location has been updated successfully");
       setShowEdit(false);
       refetch();
-      navigate("/");
+      // navigate("/");
     } catch (error) {
       toast.error(`Failed to update location: ${error.message}`);
     }
@@ -125,9 +123,9 @@ function ToiletEdit({ user, setShowEdit, refetch, toiletLocationId }) {
   // formState - React Hook Forms formState this is used to access the form state
   // resolver - React Hook Forms resolver this is used to validate the form
 
-// set location(data) value as form default values, to allow partial input.
+  // set location(data) value as form default values, to allow partial input.
   const initialValues = data?.toiletLocation || {};
-  console.log("initialValues is:", initialValues);
+
   const {
     control,
     watch,
@@ -136,19 +134,18 @@ function ToiletEdit({ user, setShowEdit, refetch, toiletLocationId }) {
     formState: { errors },
   } = useForm({
     resolver: joiResolver(schema),
-     defaultValues: {
-    name: initialValues.name || undefined, // 例如这样设置默认值
-    male: initialValues.male || false, // 对于布尔值可以使用 false 作为默认值
-    wheelchair: initialValues.wheelchair || false,
-    operator: initialValues.operator || undefined,
-    baby_facil: initialValues.baby_facil || false,
-    lon: initialValues.lon, // 对于数字可以使用 0 作为默认值
-    lat: initialValues.lat,
-  },})
+    defaultValues: {
+      name: initialValues.name || undefined, // 例如这样设置默认值
+      male: initialValues.male || false, // 对于布尔值可以使用 false 作为默认值
+      wheelchair: initialValues.wheelchair || false,
+      operator: initialValues.operator || undefined,
+      baby_facil: initialValues.baby_facil || false,
+      lon: initialValues.lon, // 对于数字可以使用 0 作为默认值
+      lat: initialValues.lat,
+    },
+  });
 
- 
-
-  if (loading) return <Loader/>;
+  if (loading) return <Loader />;
   if (error) return toast.error(error);
 
   return (
@@ -223,7 +220,6 @@ function ToiletEdit({ user, setShowEdit, refetch, toiletLocationId }) {
                 <Controller
                   name="lon"
                   control={control}
-         
                   // defaultValue={""}
                   render={({ field }) => (
                     <Form.Control
@@ -241,7 +237,6 @@ function ToiletEdit({ user, setShowEdit, refetch, toiletLocationId }) {
                 <Controller
                   name="lat"
                   control={control}
-         
                   // defaultValue={""}
                   render={({ field }) => (
                     <Form.Control

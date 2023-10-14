@@ -40,7 +40,7 @@ function Header({ user, onLogout, searchText, setSearchText }) {
             </div>
             <div>
               <Link to="/" className="text-decoration-none">
-                <h1 className="display-3 text-black bold p-0 m-0">
+                <h1 className={` text-black bold p-0 m-0 ${styles.title}`}>
                   Melbourne Public Toilet Map
                 </h1>
               </Link>
@@ -116,9 +116,9 @@ function Header({ user, onLogout, searchText, setSearchText }) {
             )}
 
             {/* search bar */}
-
-            <SearchBar setSearchText={setSearchText} />
-
+            <div className={styles.searchBar}>
+              <SearchBar setSearchText={setSearchText} />
+            </div>
             {/* search bar ends */}
           </div>
         </Nav>

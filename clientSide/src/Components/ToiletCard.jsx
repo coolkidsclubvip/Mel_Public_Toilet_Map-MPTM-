@@ -51,7 +51,7 @@ function ToiletCard({
 
   //handle delete function for toilet location
   const handleDelete = async () => {
-    console.log(location.id);
+  
     try {
       const result = await deleteJournalGQL({
         variables: { deleteToiletLocationId: location.id },
@@ -77,11 +77,11 @@ function ToiletCard({
             <Card.Body>
               <Card.Title className="text-light">
                 {" "}
-                <h2>{location.name}</h2>
+                <h3>{location.name}</h3>
                 <h3>
-                  with all its records will be deleted,and is not recoverable.{" "}
-                </h3>
-                <h1>Are you sure?</h1>
+                will be deleted forever.{" "}
+                </h3><br />
+                <h1>Confirm to delete?</h1>
               </Card.Title>
               <Card.Text> </Card.Text>
               <div className={styles.buttons}>

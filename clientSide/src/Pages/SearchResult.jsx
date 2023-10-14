@@ -35,7 +35,7 @@ function SearchResult({ searchText, user }) {
 
   useEffect(() => {
     refetch(); // Refetch the query
-  }, []);
+  }, [data]);
 
   useEffect(() => {
     if (!loading) {
@@ -60,6 +60,7 @@ function SearchResult({ searchText, user }) {
     );
   }
 
+
   return (
     <Container fluid>
       <div className={styles.container}>
@@ -79,14 +80,14 @@ function SearchResult({ searchText, user }) {
 
         <Row className="mt-3">
           {searchResult &&
-            searchResult?.map((location) => (
-              <Col sm={6} md={6} lg={4} className="mb-3 " key={location.id}>
+            searchResult?.map((location,index) => (
+              <Col sm={6} md={6} lg={4} className="mb-3 " key={`toilet-${index}`}>
                 <ToiletCard
                   location={location}
                   user={user}
                   setShowEdit={setShowEdit}
-                  // toiletLocationId={toiletLocationId}
-                  //  setToiletLocationId={setToiletLocationId}
+                  toiletLocationId={toiletLocationId}
+                   setToiletLocationId={setToiletLocationId}
                 />
               </Col>
             ))}

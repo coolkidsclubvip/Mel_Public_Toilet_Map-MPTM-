@@ -68,7 +68,7 @@ function SignUp({ onLogin }) {
           },
         },
       });
-      console.log(result.data); //Response from the server
+     
       toast.success(`User ${username} is successfully registered`);
       onLogin(result.data.createUser); // Call onLogin function with the user to be save to state and session storage????????????????????
       navigate("/"); // Navigate to the home page

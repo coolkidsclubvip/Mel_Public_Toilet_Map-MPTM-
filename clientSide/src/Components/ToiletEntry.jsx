@@ -118,10 +118,11 @@ function ToiletEntry({ user, setShowEntry, refetch }) {
           },
         },
       });
-      console.log("result is: ", result);
+      console.log("result: ", result);
+
       toast.success("New location has been created");
     } catch (error) {
-      console.error(error);
+      console.error(error.message);
       toast.error("New location creation failed: " + error.message); ///why error shows????????????????????????????????????????
     }
   };

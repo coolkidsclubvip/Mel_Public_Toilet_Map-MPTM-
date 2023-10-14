@@ -13,7 +13,7 @@ const toiletLocationResolver = {
 
     toiletLocationByName: async (parent, args, context) => {
       // Option 1: Search by input name string
-      console.log("args is:", args);
+
       try {
         const regex = new RegExp(args.name, "i"); // "i" Ignore case
 
@@ -56,7 +56,6 @@ const toiletLocationResolver = {
   Mutation: {
     createToiletLocation: async (parent, args, context) => {
       try {
-        console.log("args.input is:", args.input);
         // Check if the user is authorized (isAdmin true) to edit the journal entry
         isAuthorized(context);
 
@@ -67,9 +66,11 @@ const toiletLocationResolver = {
 
         // Create a new jlocation using the input data (a neater approach than Dna's, use when require no middle manipulation)
         const toiletLocation = new ToiletLocationsModel(args.input);
-        console.log("toiletLocation is:", toiletLocation);
+
         // Save the new location entry to the database
-        return await toiletLocation.save();
+       await toiletLocation.save();
+         return toiletLocation;
+        
       } catch (error) {
         // If there was an error, throw an ApolloError with a custom error code
         throw new GraphQLError(error, {
@@ -81,7 +82,6 @@ const toiletLocationResolver = {
     },
 
     updateToiletLocation: async (parent, args, context) => {
-      console.log("args is", args);
       try {
         // Check if the user is authenticated
 
@@ -95,7 +95,9 @@ const toiletLocationResolver = {
         isAuthorized(context);
 
         //
-        if (!args){return}
+        if (!args) {
+          return;
+        }
         // Update can accept null values, and ONLY UPDATE WHAT'S NOT NULL!!
         if (args.input.name !== null && args.input.name !== undefined) {
           toiletLocation.name = args.input.name;
@@ -106,13 +108,19 @@ const toiletLocationResolver = {
         if (args.input.male !== null && args.input.male !== undefined) {
           toiletLocation.male = args.input.male;
         }
-        if (args.input.wheelchair !== null && args.input.wheelchair !== undefined) {
+        if (
+          args.input.wheelchair !== null &&
+          args.input.wheelchair !== undefined
+        ) {
           toiletLocation.wheelchair = args.input.wheelchair;
         }
         if (args.input.operator !== null && args.input.operator !== undefined) {
           toiletLocation.operator = args.input.operator;
         }
-        if (args.input.baby_facil !== null && args.input.baby_facil !== undefined) {
+        if (
+          args.input.baby_facil !== null &&
+          args.input.baby_facil !== undefined
+        ) {
           toiletLocation.baby_facil = args.input.baby_facil;
         }
         if (args.input.lon !== null && args.input.lon !== undefined) {

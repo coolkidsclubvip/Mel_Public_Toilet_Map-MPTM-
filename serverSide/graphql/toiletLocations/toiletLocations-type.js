@@ -1,5 +1,4 @@
 const gql = require("graphql-tag");
-
 const ToiletLocationType = gql`
   type toiletLocation {
     id: ID!
