@@ -3,7 +3,7 @@ import { useEffect } from "react"; // useEffect hook
 import { Controller, useForm } from "react-hook-form"; // React Hook Forms
 import Joi from "joi"; // Joi Validation
 import { joiResolver } from "@hookform/resolvers/joi"; // Joi Resolver for React Hook Forms
-import {  useNavigate } from "react-router-dom"; // React Router
+import { useNavigate } from "react-router-dom"; // React Router
 //Apollo Client
 import { useMutation, useQuery } from "@apollo/client"; // Apollo Client Hooks - useMutation
 import { GET_TOILET_LOCATION } from "../graphQL/queries/queries"; // GraphQL Query
@@ -22,6 +22,7 @@ import { toast } from "react-toastify";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPooStorm } from "@fortawesome/free-solid-svg-icons";
 import styles from "../styles/toiletEdit.module.css";
+import Loader from "../Components/Loader";
 
 function ToiletEdit({ user, setShowEdit, refetch, toiletLocationId }) {
   // const { toiletLocationId } = useParams(); // Get the location id from the url
@@ -39,6 +40,8 @@ function ToiletEdit({ user, setShowEdit, refetch, toiletLocationId }) {
       },
     },
   });
+
+  console.log("data in ToiletEdit is:", data);// data = location
 
   // GraphQL Mutation for updating a location
   const [updateToiletLocationGQL] = useMutation(UPDATE_TOILET_LOCATION, {
@@ -65,8 +68,6 @@ function ToiletEdit({ user, setShowEdit, refetch, toiletLocationId }) {
       }
     },
   });
-
- 
 
   // onSubmit - Called when the form is submitted
   const onSubmit = async (formData) => {
@@ -98,7 +99,7 @@ function ToiletEdit({ user, setShowEdit, refetch, toiletLocationId }) {
       // redirect to toilet location page
       toast.success("Location has been updated successfully");
       setShowEdit(false);
-      refetch()
+      refetch();
       navigate("/");
     } catch (error) {
       toast.error(`Failed to update location: ${error.message}`);
@@ -107,14 +108,14 @@ function ToiletEdit({ user, setShowEdit, refetch, toiletLocationId }) {
 
   // JOI Validation for React-Hook-Forms, updated content can be empty
   const schema = Joi.object({
-    name: Joi.string().min(3).max(300),
-    female: Joi.boolean(),
-    male: Joi.boolean(),
-    wheelchair: Joi.boolean(),
-    baby_facil: Joi.boolean(),
-    operator: Joi.string().min(3).max(300),
-    lon: Joi.number(),
-    lat: Joi.number(),
+    name: Joi.string().min(3).max(300).allow(null),
+    female: Joi.boolean().allow(null),
+    male: Joi.boolean().allow(null),
+    wheelchair: Joi.boolean().allow(null),
+    baby_facil: Joi.boolean().allow(null),
+    operator: Joi.string().min(3).max(300).allow(null),
+    lon: Joi.number().allow(null),
+    lat: Joi.number().allow(null),
   });
   // React-Hook-Forms
   // control - React Hook Forms Controller this is used to control the input
@@ -123,6 +124,10 @@ function ToiletEdit({ user, setShowEdit, refetch, toiletLocationId }) {
   // setValue - React Hook Forms setValue function this is used to set the value of an input
   // formState - React Hook Forms formState this is used to access the form state
   // resolver - React Hook Forms resolver this is used to validate the form
+
+// set location(data) value as form default values, to allow partial input.
+  const initialValues = data?.toiletLocation || {};
+  console.log("initialValues is:", initialValues);
   const {
     control,
     watch,
@@ -131,17 +136,20 @@ function ToiletEdit({ user, setShowEdit, refetch, toiletLocationId }) {
     formState: { errors },
   } = useForm({
     resolver: joiResolver(schema),
-  });
+     defaultValues: {
+    name: initialValues.name || undefined, // 例如这样设置默认值
+    male: initialValues.male || false, // 对于布尔值可以使用 false 作为默认值
+    wheelchair: initialValues.wheelchair || false,
+    operator: initialValues.operator || undefined,
+    baby_facil: initialValues.baby_facil || false,
+    lon: initialValues.lon, // 对于数字可以使用 0 作为默认值
+    lat: initialValues.lat,
+  },})
 
-  // //I need this as the mood loads in a few secs after the page loads and I need to set the value of the mood to the current mood
-  // useEffect(() => {
-  //   if (data) {
-  //     setValue("mood", data.journalEntry.mood);
-  //   }
-  // }, [data]);
+ 
 
-  // if (loading) return <p>Loading... 🤔</p>;
-  // if (error) return <p>Error 😭</p>;
+  if (loading) return <Loader/>;
+  if (error) return toast.error(error);
 
   return (
     <div className={styles.wrapper}>
@@ -215,7 +223,8 @@ function ToiletEdit({ user, setShowEdit, refetch, toiletLocationId }) {
                 <Controller
                   name="lon"
                   control={control}
-                  defaultValue={""}
+         
+                  // defaultValue={""}
                   render={({ field }) => (
                     <Form.Control
                       {...field}
@@ -232,7 +241,8 @@ function ToiletEdit({ user, setShowEdit, refetch, toiletLocationId }) {
                 <Controller
                   name="lat"
                   control={control}
-                  defaultValue={""}
+         
+                  // defaultValue={""}
                   render={({ field }) => (
                     <Form.Control
                       {...field}

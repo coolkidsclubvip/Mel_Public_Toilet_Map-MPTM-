@@ -88,9 +88,9 @@ function ToiletLocations({ user }) {
             <Card
               className={`shadow text-dark m-3 align-items-center ${styles.addCard}`}
               onClick={() => {
-                    if (!user.isAdmin) {
-                      return toast.error("You are not authorized!");
-                    }
+                if (!user.isAdmin) {
+                  return toast.error("You are not authorized!");
+                }
                 setShowEntry(true);
               }}
             >
@@ -105,8 +105,8 @@ function ToiletLocations({ user }) {
 
                   <div
                     onClick={() => {
-                        if (!user.isAdmin)
-                          return toast.error("You are not authorized!");
+                      if (!user.isAdmin)
+                        return toast.error("You are not authorized!");
                       setShowEntry(true);
                     }}
                   >

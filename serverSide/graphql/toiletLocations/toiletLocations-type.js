@@ -24,7 +24,7 @@ const ToiletLocationType = gql`
     lon: Float
     lat: Float
   }
-  
+
   input updateToiletLocationInput {
     name: String
     female: Boolean

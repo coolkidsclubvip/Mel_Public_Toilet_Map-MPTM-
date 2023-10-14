@@ -28,7 +28,7 @@ export const CREATE_TOILET_LOCATION = gql`
 export const UPDATE_TOILET_LOCATION = gql`
   mutation updateToiletLocation(
     $updateToiletLocationId: ID!
-    $input: updateToiletLocationInput!
+    $input: updateToiletLocationInput
   ) {
     updateToiletLocation(id: $updateToiletLocationId, input: $input) {
       name
