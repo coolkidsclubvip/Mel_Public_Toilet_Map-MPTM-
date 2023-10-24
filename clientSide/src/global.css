@@ -14,17 +14,17 @@ html {
 a {
   color: white;
   text-decoration: none;
-  /* replace with your desired color */
+
 }
 
 a:link {
   color: white;
-  /* replace with your desired color */
+
 }
 
 a:hover {
   /* color: black; */
-  /* replace with your desired hover color */
+
 }
 
 .text-muted {
@@ -221,7 +221,3 @@ input[type="range"]:active::-webkit-slider-thumb {
 
 }
 
-/* .bg-4 {
-  background: linear-gradient(to bottom, #a80000, #dc3545);
-
-} */

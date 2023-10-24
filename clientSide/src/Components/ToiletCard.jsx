@@ -1,6 +1,6 @@
 import { Card, Button } from "react-bootstrap"; //import the Card and Button components from react bootstrap
-import { useMutation, gql } from "@apollo/client"; //import the useMutation hook from apollo client
-import { useEffect, useState } from "react";
+import { useMutation} from "@apollo/client"; //import the useMutation hook from apollo client
+import {  useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faPersonDress,
@@ -8,12 +8,12 @@ import {
   faWheelchair,
   faBabyCarriage,
 } from "@fortawesome/free-solid-svg-icons";
-import { DELETE_TOILET_LOCATION } from "../graphQL/mutations/mutations"; //import the delete journal entry mutation
+import { DELETE_TOILET_LOCATION } from "../graphQL/mutations/mutations"; //import the delete location mutation
 import Map from "../googleMap/Map";
 import { toast } from "react-toastify";
 import styles from "../styles/toiletCard.module.css";
 
-//This component is used to display the journal entries on the home page
+//This component is used to display the location on the home page
 function ToiletCard({
   location,
   user,
@@ -25,7 +25,7 @@ function ToiletCard({
   const [showWarning, setShowWarning] = useState(false);
 
   //useMutation hook to delete a location
-  const [deleteJournalGQL] = useMutation(DELETE_TOILET_LOCATION, {
+  const [deleteLocationGQL] = useMutation(DELETE_TOILET_LOCATION, {
     context: {
       headers: {
         authorization: `${user.token}`,
@@ -35,8 +35,7 @@ function ToiletCard({
     update(cache) {
       cache.modify({
         fields: {
-          //remove the deleted toilet location from the journalEntries array
-          //existingEntries is the array of journal entries
+          //remove the deleted toilet location from the locations array
           //readField is a function that reads a field from the cache
           toiletLocations(existingEntries = [], { readField }) {
             //find the toilet location that was deleted and remove it from the array
@@ -51,9 +50,8 @@ function ToiletCard({
 
   //handle delete function for toilet location
   const handleDelete = async () => {
-  
     try {
-      const result = await deleteJournalGQL({
+      const result = await deleteLocationGQL({
         variables: { deleteToiletLocationId: location.id },
       });
       if (result.errors) {
@@ -78,9 +76,8 @@ function ToiletCard({
               <Card.Title className="text-light">
                 {" "}
                 <h3>{location.name}</h3>
-                <h3>
-                will be deleted forever.{" "}
-                </h3><br />
+                <h3>will be deleted forever. </h3>
+                <br />
                 <h1>Confirm to delete?</h1>
               </Card.Title>
               <Card.Text> </Card.Text>
@@ -118,9 +115,11 @@ function ToiletCard({
               <Map location={location} />
             </div>
 
-            {/* Displays the title and date of the journal entry */}
+            {/* Displays the details of a toilet location*/}
             <div className="title w-75 ">
-              <Card.Title className="px-1">{location.name}</Card.Title>
+              <Card.Title className="p-1">
+                <h4>{location.name}</h4>
+              </Card.Title>
               <Card.Subtitle className="mb-2 text-muted">
                 Operater:{location.operator}
               </Card.Subtitle>

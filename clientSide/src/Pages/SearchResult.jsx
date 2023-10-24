@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { GET_TOILET_LOCATION_BY_NAME } from "../graphQL/queries/queries"; // Import GET_JOURNAL_ENTRIES query
+import { GET_TOILET_LOCATION_BY_NAME } from "../graphQL/queries/queries"; // Import qgl query
 import Loader from "../Components/Loader";
-import { useQuery, useMutation } from "@apollo/client"; // The useQuery hook allows send a query and get the response
-import { Card, Button, Row, Col, Container } from "react-bootstrap";
+import { useQuery} from "@apollo/client"; // The useQuery hook allows send a query and get the response
+import {  Row, Col, Container } from "react-bootstrap";
 import ToiletCard from "../Components/ToiletCard"; // Import Card component
 // import ToiletEntry from "../Components/ToiletEntry";
 import ToiletEdit from "../Components/ToiletEdit";
@@ -37,12 +37,14 @@ function SearchResult({ searchText, user }) {
     refetch(); // Refetch the query
   }, [data]);
 
+  // if loading is false, set searchResult to empty array or toiletLocationByName
   useEffect(() => {
     if (!loading) {
       setSearchResult(data?.toiletLocationByName || []);
     }
   }, [data, loading]);
 
+  // if loading is true,show loader components
   if (loading) return <Loader />;
   if (error) {
     console.log(error);

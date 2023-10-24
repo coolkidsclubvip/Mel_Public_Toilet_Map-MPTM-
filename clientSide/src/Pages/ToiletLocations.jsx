@@ -1,7 +1,6 @@
 import { useQuery } from "@apollo/client"; // The useQuery hook allows send a query and get the response
-import { Card, Button, Row, Col } from "react-bootstrap";
-// import JournalEntry from "../Components/JournalEntry"; // Import JournalEntry component
-import ToiletCard from "../Components/ToiletCard"; // Import JournalCard component
+import { Card, Row, Col } from "react-bootstrap";
+import ToiletCard from "../Components/ToiletCard"; // Import ToiletCard component
 import ToiletEntry from "../Components/ToiletEntry";
 import ToiletEdit from "../Components/ToiletEdit";
 import { useEffect, useState } from "react";
@@ -10,7 +9,7 @@ import {
   faTriangleExclamation,
   faPlus,
 } from "@fortawesome/free-solid-svg-icons";
-import { GET_TOILET_LOCATIONS } from "../graphQL/queries/queries"; // Import GET_JOURNAL_ENTRIES query
+import { GET_TOILET_LOCATIONS } from "../graphQL/queries/queries"; // Import GET_TOILET_ENTRIES query
 import styles from "../styles/toiletLocations.module.css";
 import Map from "../googleMap/Map";
 import Loader from "../Components/Loader";

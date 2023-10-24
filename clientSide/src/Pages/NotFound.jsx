@@ -1,4 +1,3 @@
-import { Card, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import styles from "../styles/notFound.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

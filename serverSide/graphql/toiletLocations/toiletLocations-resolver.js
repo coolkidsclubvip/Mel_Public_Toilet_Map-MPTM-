@@ -64,7 +64,7 @@ const toiletLocationResolver = {
 
         if (error) throw new Error(error.details[0].message);
 
-        // Create a new jlocation using the input data (a neater approach than Dna's, use when require no middle manipulation)
+        // Create a new a location using the input data (a neater approach than Dna's, use when require no middle manipulation)
         const toiletLocation = new ToiletLocationsModel(args.input);
 
         // Save the new location entry to the database
@@ -72,6 +72,7 @@ const toiletLocationResolver = {
          return toiletLocation;
         
       } catch (error) {
+        console.log("error is:", error);
         // If there was an error, throw an ApolloError with a custom error code
         throw new GraphQLError(error, {
           extensions: {

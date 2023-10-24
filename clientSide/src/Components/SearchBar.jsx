@@ -12,11 +12,15 @@ const SearchBar = ({ setSearchText }) => {
 
   const onSubmit = (e) => {
     e.preventDefault();
+    // waring if no keyword is provided
     if (inputText === "") {
       alert("Please enter keyword!");
     } else {
+      // set/send inputtext to parent component to process
       setSearchText(inputText);
+      // reset search text
       setInputText("");
+      // navigate to result page
       navigate("/searchresult");
     }
   };

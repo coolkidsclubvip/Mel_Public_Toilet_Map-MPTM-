@@ -1,11 +1,10 @@
-import React from "react";
-import { Card, Container, Button } from "react-bootstrap";
+
+import { Card, Container} from "react-bootstrap";
 import { Link } from "react-router-dom";
-import img from "../images/groupthink-blog-650x650-c-default.jpg";
 import styles from "../styles/profile.module.css";
 
 function Profile() {
-  // 从 Session Storage 中获取用户信息
+  // get user info from Session Storage 
   const userInfo = JSON.parse(sessionStorage.getItem("user"));
 
   return (
@@ -15,6 +14,7 @@ function Profile() {
         <Card.Body>
           <Card.Title>User Information:</Card.Title>
 
+{/* show user info board if user info is found */}
           {userInfo && (
             <div>
               <p>

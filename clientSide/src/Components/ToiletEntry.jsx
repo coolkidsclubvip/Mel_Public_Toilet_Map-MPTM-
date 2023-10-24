@@ -1,28 +1,19 @@
-import { useState } from "react";
-import { Controller, useForm } from "react-hook-form"; //React Hook Form
+import { Controller, useForm } from "react-hook-form"; //import React Hook Form
 import Joi from "joi"; //Joi Validation Library
-import { joiResolver } from "@hookform/resolvers/joi"; //Joi Resolver for React Hook Form. - This is needed to use Joi with React Hook Form
+import { joiResolver } from "@hookform/resolvers/joi"; //import Joi Resolver for React Hook Form. - This is needed to use Joi with React Hook Form
 // Apollo Client
-import { useMutation, gql } from "@apollo/client"; //Apollo Client Hooks - useMutation
-import { CREATE_TOILET_LOCATION } from "../graphQL/mutations/mutations"; //GraphQL Mutation
+import { useMutation} from "@apollo/client"; //import Apollo Client Hooks - useMutation
+import { CREATE_TOILET_LOCATION } from "../graphQL/mutations/mutations"; //import GraphQL Mutation
 // React Bootstrap
-import {
-  Card,
-  Col,
-  Form,
-  Row,
-  Button,
-  Alert,
-  CloseButton,
-} from "react-bootstrap";
-import styles from "../styles/toiletEntry.module.css";
-faToiletPaper;
-import { toast } from "react-toastify";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faToiletPaper } from "@fortawesome/free-solid-svg-icons";
+import { Card, Form, Button, Alert, CloseButton } from "react-bootstrap"; // import react-bootstrap page components
+
+import { toast } from "react-toastify"; //import toastify component
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"; // import FontAwesomeIcon component
+import { faToiletPaper } from "@fortawesome/free-solid-svg-icons"; // import icon from fortawesome
 
 function ToiletEntry({ user, setShowEntry, refetch }) {
-  // const userData = props.user; //User Data from App.js
+  // destructure props passed from ToiletLocation.jsx
+
   //Joi Validation
   const schema = Joi.object({
     name: Joi.string().min(3).max(300).required(),
@@ -43,7 +34,7 @@ function ToiletEntry({ user, setShowEntry, refetch }) {
   const {
     control,
     reset,
-    watch,
+
     handleSubmit,
     formState: { errors },
   } = useForm({
@@ -58,45 +49,48 @@ function ToiletEntry({ user, setShowEntry, refetch }) {
     },
   });
 
-  //GraphQL Mutation for creating a journal entry,createNewLocationGQL IS DOING THE HEAVY JOB!
-  const [createNewLocationGQL] = useMutation(CREATE_TOILET_LOCATION, {
-    //update the cache to add the new journal entry
-    update(cache, { data: { createNewLocationGQL } }) {
-      cache.modify({
-        fields: {
-          //add the new journal entry to the journalEntries array
-          toiletLocations(existingLocations = []) {
-            //create a new journal entry reference
-            const newEntryRef = cache.writeFragment({
-              data: createNewLocationGQL,
-              fragment: gql`
-                fragment NewToiletLocation on ToiletLocation {
-                  id
-                  name
-                  female
-                  male
-                  wheelchair
-                  operator
-                  baby_facil
-                  lon
-                  lat
-                }
-              `,
-            });
-            //return the new journal entry reference and the existing journal entries
-            return [...existingLocations, newEntryRef];
-          },
-        },
-      });
-    },
-  });
+  //GraphQL Mutation for creating a new toilet location,createNewLocationGQL IS DOING THE HEAVY JOB!
+  const [createNewLocationGQL] = useMutation(CREATE_TOILET_LOCATION, 
+  //   {
+  //   //update the cache to add the new location
+  //   update(cache, { data: { createNewLocationGQL } }) {
+  //     cache.modify({
+  //       fields: {
+  //         //add the new location to the locations array
+  //         toiletLocations(existingLocations = []) {
+  //           //create a new location reference
+  //           const newEntryRef = cache.writeFragment({
+  //             data: createNewLocationGQL,
+  //             fragment: gql`
+  //               fragment NewToiletLocation on ToiletLocation {
+  //                 id
+  //                 name
+  //                 female
+  //                 male
+  //                 wheelchair
+  //                 operator
+  //                 baby_facil
+  //                 lon
+  //                 lat
+  //               }
+  //             `,
+  //           });
+  //           //return the new location reference and the existing locations
+  //           return [...existingLocations, newEntryRef];
+  //         },
+  //       },
+  //     });
+  //   },
+  // }
+  );
 
-  //This function is used to create a journal entry, 只是封装，传递数据靠createNewLocationGQL完成
+  //This function is used to create a new location, (ONLY for encapsulation，data transfer is done by createNewLocationGQL function)
   const createNewLocation = async (data, token) => {
+    // data, token parameters are passed in at onSubmit function below
     //Destructure the data object
     const { name, female, male, wheelchair, operator, baby_facil, lon, lat } =
       data;
-
+console.log("data is :",data);
     try {
       //Send the mutation request with data as input
       const result = await createNewLocationGQL({
@@ -112,39 +106,46 @@ function ToiletEntry({ user, setShowEntry, refetch }) {
             lat,
           },
         },
+        //create a context contains token as auth in request header
         context: {
           headers: {
             authorization: `${token}`,
           },
         },
       });
-      console.log("result: ", result);
+      console.log("result in is: ", result);
+      toast.success("New location has been created"); // success message
 
-      toast.success("New location has been created");
+      return result; // no difference?
     } catch (error) {
-      console.error(error.message);
-      toast.error("New location creation failed: " + error.message); ///why error shows????????????????????????????????????????
+      console.error(error);
+      toast.error("New location creation failed: " + error.message); ///why error shows???????? Cache saving causes errors
     }
   };
 
   //onSubmit callback function
   const onSubmit = async (data) => {
     const { name, female, male, wheelchair, operator, baby_facil, lon, lat } =
-      data; //Destructure the data object, from hook from?
+      data; //Destructure the data object, passed in from hook from.
 
     const token = user.token; //Get the token from the user data
-    await createNewLocation(
+    const resultxx= await createNewLocation(
       { name, female, male, wheelchair, operator, baby_facil, lon, lat },
       token
-    ); //Call the createNewLocation function and pass in the data object and the token
-    refetch();
-    reset();
-    setShowEntry(false);
+    ); 
+    console.log("resultxx", resultxx); //undefined
+    
+    //Call the createNewLocation function and pass in the data object and the token
+    refetch(); // refetch data from the DB after mutation
+    reset(); // reset the form
+    setShowEntry(false); // close the entry form when creation complete
   };
 
   return (
+    // New location creation card starts
     <Card className="shadow text-white m-3 bg-1 w-50 mx-auto">
       <Card.Body>
+        {/* React hook form */}
         <Form noValidate onSubmit={handleSubmit(onSubmit)}>
           <div className="d-flex align-items-center">
             <div className="emoji  rounded-circle inner-shadow-emoji-large">
@@ -155,6 +156,7 @@ function ToiletEntry({ user, setShowEntry, refetch }) {
               />
             </div>
             <div className="w-75 mx-auto ms-3">
+              {/* controlled input */}
               <Controller
                 name="name"
                 control={control}
@@ -169,10 +171,12 @@ function ToiletEntry({ user, setShowEntry, refetch }) {
                 )}
               />
             </div>
+            {/* CloseButton component from Bootstrap */}
             <div className="display-6 mb-5" onClick={() => setShowEntry(false)}>
               <CloseButton />
             </div>
           </div>
+          {/* if error exists, show Alert component from Bootstrap */}
           {errors.name && (
             <Alert variant="dark" className="mb-2 mb-0">
               {errors.name.message}
@@ -181,6 +185,7 @@ function ToiletEntry({ user, setShowEntry, refetch }) {
 
           <div className="d-flex align-items-center">
             <div className="w-75 mx-auto">
+              {/* controlled input */}
               <Controller
                 name="operator"
                 control={control}
@@ -196,6 +201,7 @@ function ToiletEntry({ user, setShowEntry, refetch }) {
               />
             </div>
           </div>
+          {/* if error exists, show Alert component from Bootstrap */}
           {errors.operator && (
             <Alert variant="dark" className="mb-2 mb-0">
               {errors.operator.message}
@@ -203,7 +209,7 @@ function ToiletEntry({ user, setShowEntry, refetch }) {
           )}
 
           <div className="d-flex justify-content-between">
-            {/* latititude enter */}
+            {/* Latititude enter */}
             <div className="w-25 mx-auto mt-2">
               <Controller
                 name="lat"
@@ -238,6 +244,7 @@ function ToiletEntry({ user, setShowEntry, refetch }) {
               />
             </div>
           </div>
+          {/* if error exists, show Alert component from Bootstrap */}
           {errors.lon && (
             <Alert variant="dark" className="mt-2 mb-0">
               {errors.lon.message}
@@ -272,6 +279,7 @@ function ToiletEntry({ user, setShowEntry, refetch }) {
                       inline
                     />
                   </div>
+                  {/* if error exists, show Alert component from Bootstrap */}
                   {errors.male && (
                     <Alert variant="danger" className="mt-2 alert-dark mb-0">
                       {errors.male.message}
@@ -303,6 +311,7 @@ function ToiletEntry({ user, setShowEntry, refetch }) {
                       inline
                     />
                   </div>
+                  {/* if error exists, show Alert component from Bootstrap */}
                   {errors.female && (
                     <Alert variant="danger" className="mt-2 alert-dark mb-0">
                       {errors.female.message}
@@ -363,6 +372,7 @@ function ToiletEntry({ user, setShowEntry, refetch }) {
                       inline
                     />
                   </div>
+                  {/* if error exists, show Alert component from Bootstrap */}
                   {errors.wheelchair && (
                     <Alert variant="danger" className="mt-2 alert-dark mb-0">
                       {errors.wheelchair.message}

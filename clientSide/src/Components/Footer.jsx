@@ -1,5 +1,3 @@
-import React from "react";
-import { Container } from "react-bootstrap";
 import styles from "../styles/footer.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPoo } from "@fortawesome/free-solid-svg-icons";

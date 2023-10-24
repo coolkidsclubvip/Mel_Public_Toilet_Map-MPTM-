@@ -1,23 +1,14 @@
 //React
-import { useEffect } from "react"; // useEffect hook
+
 import { Controller, useForm } from "react-hook-form"; // React Hook Forms
 import Joi from "joi"; // Joi Validation
 import { joiResolver } from "@hookform/resolvers/joi"; // Joi Resolver for React Hook Forms
-import { useNavigate } from "react-router-dom"; // React Router
 //Apollo Client
 import { useMutation, useQuery } from "@apollo/client"; // Apollo Client Hooks - useMutation
 import { GET_TOILET_LOCATION } from "../graphQL/queries/queries"; // GraphQL Query
 import { UPDATE_TOILET_LOCATION } from "../graphQL/mutations/mutations"; // GraphQL Mutation
 //React Bootstrap
-import {
-  Card,
-  Col,
-  Form,
-  Row,
-  Button,
-  Alert,
-  CloseButton,
-} from "react-bootstrap";
+import { Card, Form, Button, Alert, CloseButton } from "react-bootstrap";
 import { toast } from "react-toastify";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPooStorm } from "@fortawesome/free-solid-svg-icons";
@@ -26,10 +17,9 @@ import Loader from "../Components/Loader";
 
 function ToiletEdit({ user, setShowEdit, refetch, toiletLocationId }) {
   // const { toiletLocationId } = useParams(); // Get the location id from the url
-  const navigate = useNavigate(); // Navigate function to navigate to a different page
 
   // GraphQL Query to get the location
-  // GET_JOURNAL_ENTRY - GraphQL Query
+  // GET_TOILET_LOCATION - GraphQL Query
   // toiletLocationId- The id of the location to get
   // user.token - The token from the user data
   const { loading, error, data } = useQuery(GET_TOILET_LOCATION, {
@@ -43,16 +33,16 @@ function ToiletEdit({ user, setShowEdit, refetch, toiletLocationId }) {
 
   // GraphQL Mutation for updating a location
   const [updateToiletLocationGQL] = useMutation(UPDATE_TOILET_LOCATION, {
-    // update the cache to update the journal entry
+    // update the cache to update the location entry
     update(cache, { data: { updateToiletLocationGQL } }) {
-      // read the journal entry from the cache
+      // read the location entry from the cache
       const { toiletLocation } = cache.readQuery({
         query: GET_TOILET_LOCATION,
         variables: { id: toiletLocationId },
       }) || { toiletLocation: null };
-      // write the updated journal entry to the cache
+      // write the updated location entry to the cache
       if (toiletLocation) {
-        // write the updated journal entry to the cache
+        // write the updated location entry to the cache
         cache.writeQuery({
           query: GET_TOILET_LOCATION,
           variables: { id: toiletLocationId },
@@ -128,19 +118,17 @@ function ToiletEdit({ user, setShowEdit, refetch, toiletLocationId }) {
 
   const {
     control,
-    watch,
     handleSubmit,
-    setValue,
     formState: { errors },
   } = useForm({
     resolver: joiResolver(schema),
     defaultValues: {
-      name: initialValues.name || undefined, // 例如这样设置默认值
-      male: initialValues.male || false, // 对于布尔值可以使用 false 作为默认值
+      name: initialValues.name || undefined, // undefined as default
+      male: initialValues.male || false, // false as default
       wheelchair: initialValues.wheelchair || false,
       operator: initialValues.operator || undefined,
       baby_facil: initialValues.baby_facil || false,
-      lon: initialValues.lon, // 对于数字可以使用 0 作为默认值
+      lon: initialValues.lon, //
       lat: initialValues.lat,
     },
   });

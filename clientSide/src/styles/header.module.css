@@ -1,20 +1,58 @@
-.wrapper{
+.wrapper {
     display: flex;
     flex-direction: column;
 
-     width: 100vw;
-     height: 16vh;
-     background-color:#F8B12E ;
-     z-index: 99;
-     overflow: visible;
-     /* margin-bottom: 5rem; */
+    width: 100vw;
+    height: 16vh;
+    background-color: #F8B12E;
+    z-index: 99;
+    overflow: visible;
+    /* margin-bottom: 5rem; */
 
 }
 
-.title{
 
-    font-size:4rem;
+@media screen and (min-width: 1200px) {
+
+    /* 在宽度大于等于 1200px 时应用的样式 */
+    .title {
+
+        font-size: 4rem;
+
+    }
+}
+
+/* 笔记本电脑 */
+@media screen and (max-width: 1199px) and (min-width: 992px) {
+
+    /* 在宽度小于 1200px 且大于等于 992px 时应用的样式 */
+    .title {
+
+        font-size: 2.5rem;
+
+    }
+}
+
+/* iPad */
+@media screen and (max-width: 991px) and (min-width: 768px) {
+
+    /* 在宽度小于 992px 且大于等于 768px 时应用的样式 */
+    .title {
+
+        font-size: 2rem;
+
+    }
 
 }
 
-    
+/* 主流智能手机 */
+@media screen and (max-width: 767px) {
+
+    /* 在宽度小于 768px 时应用的样式 */
+    .title {
+
+        font-size: 1.5rem;
+
+    }
+
+}

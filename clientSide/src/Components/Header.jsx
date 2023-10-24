@@ -1,7 +1,6 @@
-import { useEffect, useState } from "react";
-import { Nav, Container } from "react-bootstrap";
-import { Link } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Nav, Container } from "react-bootstrap";//import grid component from react-bootstrap
+import { Link } from "react-router-dom"; //import internal Link component from react-router-dom
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";//import FontAwesomeIcon component from react-fontawesome
 import {
   faEarthOceania,
   faMapLocation,
@@ -9,16 +8,16 @@ import {
   faRightFromBracket,
   faRightToBracket,
   faUserPlus,
-  faMagnifyingGlass,
-} from "@fortawesome/free-solid-svg-icons";
-import styles from "../styles/header.module.css";
-import SearchBar from "./SearchBar";
+} from "@fortawesome/free-solid-svg-icons";//import icons from fortawesome(not fontawesome)
+import styles from "../styles/header.module.css";//import styles from css module
+import SearchBar from "./SearchBar"; // import custom SearchBar component 
 
 // Defining the Header component that takes in the user and onLogout props
 // user - The user object
 // onLogout - The function to call when the user clicks the logout button
-function Header({ user, onLogout, searchText, setSearchText }) {
-  //
+
+function Header({ user, onLogout, searchText, setSearchText }) { 
+
 
   return (
     <div className={styles.wrapper}>
@@ -52,7 +51,7 @@ function Header({ user, onLogout, searchText, setSearchText }) {
           {/* Rendering the navigation links */}
           <div className="d-flex">
             {/* Rendering the toilet locations ONLY WHEN logged in */}
-            {user ? (
+            {user && (
               <Link to="/" className="nav-link background-hover px-3 m-3">
                 <FontAwesomeIcon
                   icon={faMapLocation}
@@ -61,8 +60,6 @@ function Header({ user, onLogout, searchText, setSearchText }) {
                 />{" "}
                 Locations
               </Link>
-            ) : (
-              <div className="nav-link "></div>
             )}
 
             {/* Rendering the user profile and logout links if the user is logged in */}
@@ -116,9 +113,9 @@ function Header({ user, onLogout, searchText, setSearchText }) {
             )}
 
             {/* search bar */}
-            <div className={styles.searchBar}>
-              <SearchBar setSearchText={setSearchText} />
-            </div>
+
+            <SearchBar setSearchText={setSearchText} />
+
             {/* search bar ends */}
           </div>
         </Nav>

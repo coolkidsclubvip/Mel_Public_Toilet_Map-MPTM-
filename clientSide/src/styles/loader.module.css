@@ -18,7 +18,7 @@ height: 79vh;
      display: flex;
      width: 5px;
      height: 30px;
-     background-color: #000000;
+     background-color: #ffae00;
      animation: sciFiLoading 1s infinite;
      opacity: 0.2;
 }

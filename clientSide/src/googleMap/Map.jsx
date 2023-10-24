@@ -16,17 +16,17 @@ function Map({ location }) {
     }
   }, [isLoaded, isMarkerVisible]);
 
-  // 根据传入的数据类型进行处理
+  //Process according to the incoming data type
   if (Array.isArray(location)) {
-    // 如果传入的是数组，直接使用该数组作为位置
+    // If an array is passed in, use the array directly as the position
     locations = location;
   } else if (typeof location === "object") {
-    // 如果传入的是对象，将对象转化为数组
+    // If an object is passed in, convert the object into an array
     locations = [location];
   }
 
-  // 当地图加载后，适应所有标记的视图
-  // 在 Map 组件中修复 useEffect
+  // When the map loads, adapt the view to all markers
+  // Fix useEffect in Map component
   useEffect(() => {
     if (map && locations.length > 0) {
       const bounds = new window.google.maps.LatLngBounds();
@@ -57,7 +57,7 @@ function Map({ location }) {
     <GoogleMap
       id="map"
       options={mapOptions}
-      onLoad={(map) => setMap(map)} // 保存地图实例
+      onLoad={(map) => setMap(map)} // save map instance
     >
       {isMarkerVisible &&
         locations.map((marker, index) => (

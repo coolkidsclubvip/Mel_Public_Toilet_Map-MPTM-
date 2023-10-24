@@ -1,5 +1,4 @@
-//React
-import { useState } from "react";
+
 //Bootstrap
 import { Card, Form, Button, Alert } from "react-bootstrap";
 //React Router
@@ -34,9 +33,8 @@ function SignUp({ onLogin }) {
     control,
     handleSubmit,
     formState: { errors },
-    reset,
   } = useForm({
-    resolver: joiResolver(schema), //resolver：使用Joi验证库来验证表单数据，将其与React Hook Form集成。defaultValues：设置表单字段的默认值。
+    resolver: joiResolver(schema), //resolver: Use Joi validation library to validate form data, integrating it with React Hook Form. defaultValues: Set the default values of form fields.
     defaultValues: {
       username: "",
       email: "",
@@ -46,7 +44,7 @@ function SignUp({ onLogin }) {
   });
 
   //?Apollo Client Mutation
-  const [createUser, { loading, error }] = useMutation(CREATE_USER); //createUser - The mutation function 一个名为CREATE_USER的gql查询语句，放入useMutation钩子，得到一个createUser function
+  const [createUser, { loading, error }] = useMutation(CREATE_USER); //createUser - The mutation function A gql query statement named CREATE_USER, put in the useMutation hook, and get a createUser function
 
   const navigate = useNavigate(); // Navigate function to navigate to a different page
 
@@ -57,7 +55,7 @@ function SignUp({ onLogin }) {
     const { username, email, password, isAdmin } = data; // Destructure data from form
 
     try {
-      // Send the mutation request with data as input 用集成了gql mutation语句的发射函数
+      // Send the mutation request with data as input using the launch function integrated with the gql mutation statement
       const result = await createUser({
         variables: {
           input: {
@@ -68,9 +66,9 @@ function SignUp({ onLogin }) {
           },
         },
       });
-     
+
       toast.success(`User ${username} is successfully registered`);
-      onLogin(result.data.createUser); // Call onLogin function with the user to be save to state and session storage????????????????????
+      onLogin(result.data.createUser); // Call onLogin function with the user to be save to state and session storage? ?
       navigate("/"); // Navigate to the home page
     } catch (error) {
       console.log(error.message);
@@ -101,7 +99,7 @@ function SignUp({ onLogin }) {
             </div>
           </div>
           {/* /Form Header */}
-          {/* 使用了 noValidate 属性来阻止浏览器默认的表单验证 */}
+          {/* The noValidate attribute is used to prevent the browser's default form validation*/}
           <Form noValidate="noValidate" onSubmit={handleSubmit(onSubmit)}>
             {/* Email Text Box */}
             <Controller
@@ -112,7 +110,7 @@ function SignUp({ onLogin }) {
                 <Form.Group controlId="username">
                   <Form.Label className="visually-hidden">Username</Form.Label>
                   <Form.Control
-                    {...field} // 将字段的值和事件处理程序绑定到输入元素
+                    {...field} // Bind the field's value and event handler to the input element
                     type="text"
                     placeholder="Username"
                     size="lg"
