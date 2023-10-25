@@ -1,4 +1,5 @@
 const gql = require("graphql-tag");
+// prepare the query for Types
 const ToiletLocationType = gql`
   type toiletLocation {
     id: ID!
@@ -35,12 +36,13 @@ const ToiletLocationType = gql`
     lat: Float
   }
 
+#  Query Types
   type Query {
     toiletLocations: [toiletLocation]
     toiletLocation(id: ID!): toiletLocation
     toiletLocationByName(name: String!): [toiletLocation]
   }
-
+#  Mutaion Types
   type Mutation {
     createToiletLocation(input: createToiletLocationInput!): toiletLocation
     updateToiletLocation(

@@ -62,14 +62,14 @@ async function startServer() {
     context: async ({ req, res }) => {
       try {
         // Get the user token from the headers
-        const token = req.headers.authorization || ''; /////////请求头是后期，前端请求时候设置--chatGPT
+        const token = req.headers.authorization || ""; //headers.authorization is set up at client side
         // console.log("token from res.headers.authorization is:", token);
         if (!token) return;
         // Try to retrieve a user with the token
 
         const user = jwt.verify(token, appPrivateKey); // Decodes the token
         if (!user) {
-          throw new Error('User not found');
+          throw new Error("User not found");
         }
         // Add the user to the context
         return { user };

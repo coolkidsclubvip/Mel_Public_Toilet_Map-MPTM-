@@ -1,6 +1,6 @@
 const Joi = require("joi");
 
-// Define a function that validates journal entry input using Joi
+// Define a function that validates location entry input using Joi
 function validateToiletLocation(ToiletLocation) {
   const schema = Joi.object({
     name: Joi.string().min(5).max(500).required(),

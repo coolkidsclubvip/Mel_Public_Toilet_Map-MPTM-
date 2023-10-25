@@ -56,7 +56,7 @@ const toiletLocationResolver = {
   Mutation: {
     createToiletLocation: async (parent, args, context) => {
       try {
-        // Check if the user is authorized (isAdmin true) to edit the journal entry
+        // Check if the user is authorized (isAdmin true) to edit the location entry
         isAuthorized(context);
 
         // Validate the input data
@@ -133,7 +133,7 @@ const toiletLocationResolver = {
 
         // No need to update location, location can not change!
 
-        // Save the updated journal entry to the database
+        // Save the updated location entry to the database
         return await toiletLocation.save();
       } catch (error) {
         throw new GraphQLError(error, {

@@ -4,10 +4,7 @@ function isAuthenticated(context) {
 		throw new Error('Not authenticated')
 	}
 }
-// function isAuthorized(user, context) {
-// 	if (user._id.toString() !== context.user._id.toString()) {
-// 		throw new Error('Not authorized')
-// 	}
+
 	function isAuthorized( context) {
 	if (context.user.isAdmin !== true) {
 		throw new Error('Not authorized')
