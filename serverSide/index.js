@@ -10,10 +10,13 @@ const { connect } = require('./helpers/connection.js');
 //Config Setup
 require('dotenv').config();
 const config = require('config');
+console.log("config is: ", config);
+console.log("process.env.APP_PRIVATE_KEY  is: ", process.env.APP_PRIVATE_KEY);
 
 // Get appPrivateKey and dbConnectionString from config
 const appEnv = config.get('appEnv');
 const appPrivateKey = config.get('appPrivateKey');
+console.log("appPrivateKey is: ", appPrivateKey);
 const dbName = config.get('db.name');
 const dbConnectionString = config.get('db.connectionString');
 
