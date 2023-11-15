@@ -25,7 +25,8 @@ import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
 
 // Create Apollo Client
 const client = new ApolloClient({
-  uri: "http://localhost:4000/",
+  // uri: "http://localhost:4000/",
+  uri:"https://mel-public-toilet-map-mptm.onrender.com",
   cache: new InMemoryCache(),
 });
 

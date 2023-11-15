@@ -1,35 +1,35 @@
 // Import required external modules
-const { ApolloServer } = require('@apollo/server');
+const { ApolloServer } = require("@apollo/server");
 const { GraphQLError } = require("graphql");
-const { startStandaloneServer } = require('@apollo/server/standalone');
-const jwt = require('jsonwebtoken');
-const glob = require('glob');
-const { mergeTypeDefs, mergeResolvers } = require('@graphql-tools/merge');
+const { startStandaloneServer } = require("@apollo/server/standalone");
+const jwt = require("jsonwebtoken");
+const glob = require("glob");
+const { mergeTypeDefs, mergeResolvers } = require("@graphql-tools/merge");
 //Database connection function
-const { connect } = require('./helpers/connection.js');
+const { connect } = require("./helpers/connection.js");
 //Config Setup
-require('dotenv').config();
-const config = require('config');
-console.log("config is: ", config);
-console.log("process.env.APP_PRIVATE_KEY  is: ", process.env.APP_PRIVATE_KEY);
+require("dotenv").config();
+const config = require("config");
 
 // Get appPrivateKey and dbConnectionString from config
-const appEnv = config.get('appEnv');
-const appPrivateKey = config.get('appPrivateKey');
-console.log("appPrivateKey is: ", appPrivateKey);
-const dbName = config.get('db.name');
-const dbConnectionString = config.get('db.connectionString');
+const appEnv = config.get("appEnv");
+const appPrivateKey = config.get("appPrivateKey");
+
+const dbName = config.get("db.name");
+const dbConnectionString = config.get("db.connectionString");
 
 // Check that appPrivateKey and dbConnectionString are defined
 if (!appPrivateKey && dbConnectionString) {
-  console.error('FATAL ERROR: APP_PRIVATE_KEY is not defined and or DB_CONNECTION_STRING is not defined');
+  console.error(
+    "FATAL ERROR: APP_PRIVATE_KEY is not defined and or DB_CONNECTION_STRING is not defined"
+  );
   process.exit(1);
 }
 
 // Load GraphQL type definitions and resolvers
-const resolvers = glob.sync('graphql/*/*-resolver.js');
+const resolvers = glob.sync("graphql/*/*-resolver.js");
 const registerResolvers = resolvers.map((resolver) => require(`./${resolver}`));
-const types = glob.sync('graphql/*/*-type.js');
+const types = glob.sync("graphql/*/*-type.js");
 const registerTypes = types.map((type) => require(`./${type}`));
 
 // Merge type definitions and resolvers
@@ -46,7 +46,7 @@ async function startServer() {
     formatError: (error) => {
       const { message, extensions } = error;
       //Call to Logger could go here
-      if (appEnv !== 'development') {
+      if (appEnv !== "development") {
         // In production, remove the stack trace from the error
         delete extensions.stacktrace;
       }
@@ -66,7 +66,7 @@ async function startServer() {
       try {
         // Get the user token from the headers
         const token = req.headers.authorization || ""; //headers.authorization is set up at client side
-        // console.log("token from res.headers.authorization is:", token);
+
         if (!token) return;
         // Try to retrieve a user with the token
 
@@ -79,12 +79,11 @@ async function startServer() {
       } catch (error) {
         throw new GraphQLError(error, {
           extensions: {
-            code: 'JWT_DECODE_ERROR',
+            code: "JWT_DECODE_ERROR",
           },
         });
       }
     },
-
   });
 
   // Log the server URL

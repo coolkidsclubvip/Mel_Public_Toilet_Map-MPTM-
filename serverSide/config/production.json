@@ -1,0 +1,9 @@
+{
+  "appPrivateKey": "APP_PRIVATE_KEY_PROD",
+  "port": "PORT_PROD",
+  "db": {
+    "connectionString": "DB_CONNECTION_STRING_PROD",
+    "name": "mptm"
+  },
+  "appEnv": "production"
+}
