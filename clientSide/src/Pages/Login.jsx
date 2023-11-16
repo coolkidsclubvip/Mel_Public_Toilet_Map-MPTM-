@@ -1,9 +1,10 @@
+import { useState } from "react";
 import { Controller, useForm } from "react-hook-form"; // Import React Hook Forms' Controller and useForm hooks
 import Joi from "joi"; // Import Joi for data validation
 import { joiResolver } from "@hookform/resolvers/joi"; // Import the Joi Resolver for React Hook Forms
 import { Link, useNavigate } from "react-router-dom"; // Import React Router components
 // React Bootstrap
-import { Card, Form, Button, Alert } from "react-bootstrap"; // Import React Bootstrap components
+import { Card, Form, Button, Alert, Spinner } from "react-bootstrap"; // Import React Bootstrap components
 // Apollo Client
 import { useMutation } from "@apollo/client"; // Import the useMutation hook from Apollo Client
 // GraphQL Mutations
@@ -44,12 +45,15 @@ function Login({ onLogin }) {
   const [loginUser, { loading, error }] = useMutation(LOGIN_USER); // loginUser - The mutation function
 
   const navigate = useNavigate(); // Navigate function to navigate to a different page
+  const [loginLoading, setLoginLoading] = useState(false);
 
   // Submit Login
   const onSubmit = async (data, event) => {
     event.preventDefault(); // Prevents page from refreshing on submit
+     setLoginLoading(true);
     const { email, password } = data; // Destructure data from form
     try {
+     
       // Send the mutation request with data as input
       const result = await loginUser({
         variables: {
@@ -59,7 +63,7 @@ function Login({ onLogin }) {
           },
         },
       });
-      console.log("result.data is: ", result.data);
+
       toast.success(`Welcome back, ${result.data.loginUser.username}`);
       onLogin(result.data.loginUser); // Call onLogin function from App.jsx to store the user in App.jsx state
       navigate("/"); // Navigate to the home page
@@ -150,7 +154,13 @@ function Login({ onLogin }) {
               className="w-100 mt-2"
               type="submit"
             >
-              Login <i className="bi bi-send-fill"></i>
+              {loginLoading ? (
+                <><Spinner /> It might take some time...</>
+              ) : (
+                <>
+                  Login <i className="bi bi-send-fill"></i>
+                </>
+              )}
             </Button>
             {/* /Submit Button */}
             {/* Sign Up Link */}
